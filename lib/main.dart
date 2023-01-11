@@ -75,9 +75,8 @@ class _MyHomePageState extends State<MyHomePage> {
               for (var num in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
                 Column(
                   children: [
-                    Image(
-                        image: AssetImage(
-                            'assets/images/lectures/lecture1.png')), // chrome & macos path is different
+                    Image.asset(
+                        'assets/images/lectures/lecture1.png'), // chrome & macos path is different
                     Text(
                       '${num.toString()} 번째 인강',
                     )
