@@ -136,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: (() => _setExtended()),
                   icon: Icon(arrowIconData),
                 ),
-                extended: constraints.maxWidth >= 600 && _extended,
+                extended: _extended,
                 destinations: const [
                   NavigationRailDestination(
                     icon: Icon(Icons.computer),
