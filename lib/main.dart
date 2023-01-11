@@ -64,14 +64,40 @@ class _MyHomePageState extends State<MyHomePage> {
     switch (_selectedIndex) {
       case 0:
         page = Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                '인강 리스트 불러오기',
-              ),
+          child: GridView(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              childAspectRatio: 1 / 1,
+              // mainAxisSpacing: 0.1,
+              // crossAxisSpacing: 0.1,
+            ),
+            children: [
+              for (var num in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
+                Column(
+                  children: [
+                    Image(
+                        image: AssetImage(
+                            'assets/images/lectures/lecture1.png')), // chrome & macos path is different
+                    Text(
+                      '${num.toString()} 번째 인강',
+                    )
+                  ],
+                ),
+              // ListTile(
+              //   title: Text(
+              //     '${num.toString()} 번째 인강',
+              //   ),
+              // )
             ],
           ),
+          // Column(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: <Widget>[
+          //     const Text(
+          //       '인강 리스트 불러오기',
+          //     ),
+          //   ],
+          // ),
         );
         break;
       case 1:
