@@ -41,6 +41,11 @@ class MyAppState extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void deleteFavorite(WordPair favorite) {
+    favorites.remove(favorite);
+    notifyListeners();
+  }
 }
 
 class MyHomePage extends StatefulWidget {
@@ -59,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
         page = GeneratorPage();
         break;
       case 1:
-        page = Placeholder();
+        page = FavoritesPage();
         break;
       default:
         throw UnimplementedError('No widget for $selectedIndex');
@@ -99,6 +104,44 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
     });
+  }
+}
+
+class FavoritesPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    var favorites = appState.favorites;
+    if (favorites.isEmpty) {
+      return Center(
+        child: Text('No favorites yet'),
+      );
+    }
+    var theme = Theme.of(context);
+    var color = theme.colorScheme.surface;
+    return ListView(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('You have ${favorites.length} favorites'),
+        ),
+        for (var favorite in favorites)
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
+              color: color,
+              child: ListTile(
+                title: Text('$favorite'),
+                leading: Icon(Icons.favorite),
+                trailing: IconButton(
+                  onPressed: (() => appState.deleteFavorite(favorite)),
+                  icon: Icon(Icons.delete),
+                ),
+              ),
+            ),
+          )
+      ],
+    );
   }
 }
 
