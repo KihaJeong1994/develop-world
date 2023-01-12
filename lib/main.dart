@@ -30,7 +30,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
-  bool _extended = true;
 
   void _setSelectedIndex(int value) {
     setState(() {
@@ -40,12 +39,6 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _selectedIndex = value;
-    });
-  }
-
-  void _setExtended() {
-    setState(() {
-      _extended = !_extended;
     });
   }
 
@@ -105,9 +98,9 @@ class _MyHomePageState extends State<MyHomePage> {
       default:
         throw UnimplementedError('No page for $_selectedIndex');
     }
-    IconData arrowIconData;
-    arrowIconData =
-        _extended ? Icons.arrow_back_ios_new : Icons.arrow_forward_ios;
+    // IconData arrowIconData;
+    // arrowIconData =
+    //     _extended ? Icons.arrow_back_ios_new : Icons.arrow_forward_ios;
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(Icons.accessibility_new_rounded),
@@ -132,11 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             SafeArea(
               child: NavigationRail(
-                leading: IconButton(
-                  onPressed: (() => _setExtended()),
-                  icon: Icon(arrowIconData),
-                ),
-                extended: _extended,
+                extended: constraints.maxWidth >= 600,
                 destinations: const [
                   NavigationRailDestination(
                     icon: Icon(Icons.computer),
