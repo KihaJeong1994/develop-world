@@ -1,3 +1,4 @@
+import 'package:develop_world/lecture.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,9 +13,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.lime,
+        primarySwatch: Colors.blueGrey,
       ),
-      home: const MyHomePage(title: 'Develop World'),
+      home: const MyHomePage(
+        title: 'D.W.D',
+      ),
     );
   }
 }
@@ -31,55 +34,107 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
-  void _setSelectedIndex(int value) {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _selectedIndex = value;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     final ButtonStyle style = TextButton.styleFrom(
       foregroundColor: Theme.of(context).colorScheme.onPrimary,
     );
     Widget page;
+    var lectures = [
+      Lecture(
+        title: '스프링 입문 - 코드로 배우는 스프링 부트, 웹 MVC, DB 접근 기술',
+        site: Site.inflearn,
+        image: 'lecture1.png',
+      ),
+      Lecture(
+        title: '10개 프로젝트로 완성하는 백엔드 웹개발(Java/Spring)',
+        site: Site.fastcampus,
+        image: 'lecture2.png',
+      ),
+      Lecture(
+        title: '[코드팩토리] [입문] Dart 언어 4시간만에 완전정복',
+        site: Site.inflearn,
+        image: 'lecture3.png',
+      ),
+    ];
     switch (_selectedIndex) {
       case 0:
         page = Center(
           child: GridView(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              childAspectRatio: 1 / 1,
-              // mainAxisSpacing: 0.1,
-              // crossAxisSpacing: 0.1,
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 320,
+              childAspectRatio: 400 / 400,
             ),
             children: [
-              for (var num in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
-                Column(
-                  children: [
-                    Image.asset(
-                        'images/lectures/lecture1.png'), // chrome & macos path is different
-                    Text(
-                      '${num.toString()} 번째 인강',
-                    )
-                  ],
+              for (var lecture in lectures)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'images/lectures/${lecture.image}',
+                        width: 320,
+                        height: 160,
+                      ), // chrome & macos path is different
+                      Table(
+                        border: TableBorder.all(
+                          style: BorderStyle.none,
+                        ),
+                        columnWidths: const <int, TableColumnWidth>{
+                          0: FixedColumnWidth(100),
+                          1: FlexColumnWidth(),
+                        },
+                        defaultVerticalAlignment:
+                            TableCellVerticalAlignment.middle,
+                        children: <TableRow>[
+                          TableRow(
+                            children: <Widget>[
+                              Container(
+                                height: 32,
+                                child: Text(
+                                  '제목',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.normal,
+                                  ),
+                                ),
+                              ),
+                              TableCell(
+                                verticalAlignment:
+                                    TableCellVerticalAlignment.top,
+                                child: Container(
+                                  height: 40,
+                                  child: Text(
+                                    '${lecture.title}',
+                                    overflow: TextOverflow.fade,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          TableRow(
+                            children: <Widget>[
+                              Container(
+                                height: 32,
+                                child: Text(
+                                  '사이트',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.normal,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: 32,
+                                child: Text('${lecture.site.name}'),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-              // ListTile(
-              //   title: Text(
-              //     '${num.toString()} 번째 인강',
-              //   ),
-              // )
             ],
           ),
           // Column(
@@ -117,7 +172,13 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(
+          widget.title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
         centerTitle: false,
       ),
       body: LayoutBuilder(builder: (context, constraints) {
@@ -137,7 +198,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
                 selectedIndex: _selectedIndex,
-                onDestinationSelected: (value) => _setSelectedIndex(value),
+                onDestinationSelected: (value) =>
+                    setState(() => _selectedIndex = value),
               ),
             ),
             Expanded(
