@@ -76,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Column(
                   children: [
                     Image.asset(
-                        'assets/images/lectures/lecture1.png'), // chrome & macos path is different
+                        'images/lectures/lecture1.png'), // chrome & macos path is different
                     Text(
                       '${num.toString()} 번째 인강',
                     )
