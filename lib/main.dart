@@ -1,5 +1,6 @@
 import 'package:develop_world/lecture.dart';
 import 'package:flutter/material.dart';
+import 'package:image_card/image_card.dart';
 
 void main() {
   runApp(const MyApp());
@@ -54,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
       Lecture(
         title: '[코드팩토리] [입문] Dart 언어 4시간만에 완전정복',
         site: Site.inflearn,
-        image: 'lecture3.png',
+        image: 'lecture3.jpeg',
       ),
     ];
     switch (_selectedIndex) {
@@ -63,88 +64,42 @@ class _MyHomePageState extends State<MyHomePage> {
           child: GridView(
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 320,
-              childAspectRatio: 400 / 400,
+              childAspectRatio: 400 / 440,
             ),
             children: [
               for (var lecture in lectures)
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(2.0),
                   child: Column(
                     children: [
-                      Image.asset(
-                        'images/lectures/${lecture.image}',
-                        width: 320,
-                        height: 160,
-                      ), // chrome & macos path is different
-                      Table(
-                        border: TableBorder.all(
-                          style: BorderStyle.none,
+                      FillImageCard(
+                        // width: 320,
+                        // heightImage: 160,
+                        imageProvider: AssetImage(
+                          'images/lectures/${lecture.image}',
                         ),
-                        columnWidths: const <int, TableColumnWidth>{
-                          0: FixedColumnWidth(100),
-                          1: FlexColumnWidth(),
-                        },
-                        defaultVerticalAlignment:
-                            TableCellVerticalAlignment.middle,
-                        children: <TableRow>[
-                          TableRow(
-                            children: <Widget>[
-                              Container(
-                                height: 32,
-                                child: Text(
-                                  '제목',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                ),
-                              ),
-                              TableCell(
-                                verticalAlignment:
-                                    TableCellVerticalAlignment.top,
-                                child: Container(
-                                  height: 40,
-                                  child: Text(
-                                    '${lecture.title}',
-                                    overflow: TextOverflow.fade,
-                                  ),
-                                ),
-                              ),
-                            ],
+                        // tags: [_tag('Category', () {}), _tag('Product', () {})],
+                        title: Text(
+                          '${lecture.title}',
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        description: Text(
+                          '${lecture.site.name}',
+                          style: TextStyle(
+                            color: Colors.grey,
                           ),
-                          TableRow(
-                            children: <Widget>[
-                              Container(
-                                height: 32,
-                                child: Text(
-                                  '사이트',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                height: 32,
-                                child: Text('${lecture.site.name}'),
-                              ),
-                            ],
-                          ),
-                        ],
-                      )
+                        ),
+                      ),
+                      // Image.asset(
+                      //   'images/lectures/${lecture.image}',
+                      //   width: 320,
+                      //   height: 160,
+                      // ), // chrome & macos path is different
                     ],
                   ),
                 ),
             ],
           ),
-          // Column(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: <Widget>[
-          //     const Text(
-          //       '인강 리스트 불러오기',
-          //     ),
-          //   ],
-          // ),
         );
         break;
       case 1:
