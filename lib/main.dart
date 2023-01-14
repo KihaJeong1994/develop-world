@@ -65,39 +65,11 @@ class _MyHomePageState extends State<MyHomePage> {
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 320,
               childAspectRatio: 400 / 440,
+              mainAxisSpacing: 10.0,
+              crossAxisSpacing: 10.0,
             ),
             children: [
-              for (var lecture in lectures)
-                Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: Column(
-                    children: [
-                      FillImageCard(
-                        // width: 320,
-                        // heightImage: 160,
-                        imageProvider: AssetImage(
-                          'images/lectures/${lecture.image}',
-                        ),
-                        // tags: [_tag('Category', () {}), _tag('Product', () {})],
-                        title: Text(
-                          '${lecture.title}',
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        description: Text(
-                          '${lecture.site.name}',
-                          style: TextStyle(
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-                      // Image.asset(
-                      //   'images/lectures/${lecture.image}',
-                      //   width: 320,
-                      //   height: 160,
-                      // ), // chrome & macos path is different
-                    ],
-                  ),
-                ),
+              for (var lecture in lectures) HoverImage(lecture: lecture),
             ],
           ),
         );
@@ -165,6 +137,81 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         );
       }),
+    );
+  }
+}
+
+class HoverImage extends StatefulWidget {
+  const HoverImage({
+    Key? key,
+    required this.lecture,
+  }) : super(key: key);
+
+  final Lecture lecture;
+
+  @override
+  State<HoverImage> createState() => _HoverImageState();
+}
+
+class _HoverImageState extends State<HoverImage> {
+  bool _hover = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final double scale = _hover ? 1.01 : 1.0;
+    return MouseRegion(
+      onEnter: (_) {
+        setState(() {
+          _hover = true;
+        });
+      },
+      onExit: (_) {
+        setState(() {
+          _hover = false;
+        });
+      },
+      child: AnimatedContainer(
+          transform: Matrix4.diagonal3Values(scale, scale, 1),
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeInOut,
+          child: Column(
+            children: [
+              FillImageCard(
+                // width: 320,
+                // heightImage: 160,
+                imageProvider: AssetImage(
+                  'images/lectures/${widget.lecture.image}',
+                ),
+                // tags: [_tag('Category', () {}), _tag('Product', () {})],
+                title: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '${widget.lecture.title}',
+                        style: TextStyle(fontFamily: 'Diodrum'),
+                      ),
+                    ],
+                  ),
+                  // overflow: TextOverflow.ellipsis,
+                ),
+                // Text(
+                //   '${widget.lecture.title}',
+                //   overflow: TextOverflow.ellipsis,
+                // ),
+                description: Text(
+                  '${widget.lecture.site.name}',
+                  style: TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+              // Image.asset(
+              //   'images/lectures/${lecture.image}',
+              //   width: 320,
+              //   height: 160,
+              // ), // chrome & macos path is different
+            ],
+          )),
     );
   }
 }
