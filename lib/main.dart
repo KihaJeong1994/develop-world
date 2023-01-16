@@ -41,38 +41,9 @@ class _MyHomePageState extends State<MyHomePage> {
       foregroundColor: Theme.of(context).colorScheme.onPrimary,
     );
     Widget page;
-    var lectures = [
-      Lecture(
-        title: '스프링 입문 - 코드로 배우는 스프링 부트, 웹 MVC, DB 접근 기술',
-        site: Site.inflearn,
-        image: 'lecture1.png',
-      ),
-      Lecture(
-        title: '10개 프로젝트로 완성하는 백엔드 웹개발(Java/Spring)',
-        site: Site.fastcampus,
-        image: 'lecture2.png',
-      ),
-      Lecture(
-        title: '[코드팩토리] [입문] Dart 언어 4시간만에 완전정복',
-        site: Site.inflearn,
-        image: 'lecture3.jpeg',
-      ),
-    ];
     switch (_selectedIndex) {
       case 0:
-        page = Center(
-          child: GridView(
-            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 320,
-              childAspectRatio: 400 / 440,
-              mainAxisSpacing: 10.0,
-              crossAxisSpacing: 10.0,
-            ),
-            children: [
-              for (var lecture in lectures) HoverImage(lecture: lecture),
-            ],
-          ),
-        );
+        page = LectureList();
         break;
       case 1:
         page = Placeholder();
@@ -137,6 +108,47 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         );
       }),
+    );
+  }
+}
+
+class LectureList extends StatelessWidget {
+  LectureList({
+    Key? key,
+  }) : super(key: key);
+
+  var lectures = [
+    Lecture(
+      title: '스프링 입문 - 코드로 배우는 스프링 부트, 웹 MVC, DB 접근 기술',
+      site: Site.inflearn,
+      image: 'lecture1.png',
+    ),
+    Lecture(
+      title: '10개 프로젝트로 완성하는 백엔드 웹개발(Java/Spring)',
+      site: Site.fastcampus,
+      image: 'lecture2.png',
+    ),
+    Lecture(
+      title: '[코드팩토리] [입문] Dart 언어 4시간만에 완전정복',
+      site: Site.inflearn,
+      image: 'lecture3.jpeg',
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: GridView(
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 320,
+          childAspectRatio: 400 / 440,
+          mainAxisSpacing: 10.0,
+          crossAxisSpacing: 10.0,
+        ),
+        children: [
+          for (var lecture in lectures) HoverImage(lecture: lecture),
+        ],
+      ),
     );
   }
 }
