@@ -140,9 +140,10 @@ class LectureList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: GridView(
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 320,
-          childAspectRatio: 400 / 440,
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 300,
+          childAspectRatio:
+              MediaQuery.of(context).size.width >= 800 ? 300 / 330 : 300 / 360,
           mainAxisSpacing: 10.0,
           crossAxisSpacing: 10.0,
         ),
@@ -220,12 +221,16 @@ class _HoverImageState extends State<HoverImage> {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: widget.lecture.title,
-                        style: const TextStyle(fontFamily: 'Diodrum'),
+                        text: widget.lecture.title.replaceAll('', '\u{200B}'),
+                        style: const TextStyle(
+                          fontFamily: 'Diodrum',
+                          color: Colors.black,
+                        ),
                       ),
                     ],
                   ),
-                  // overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 // Text(
                 //   '${widget.lecture.title}',
