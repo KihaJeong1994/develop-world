@@ -1,6 +1,7 @@
 import 'package:develop_world/lecture.dart';
 import 'package:flutter/material.dart';
 import 'package:image_card/image_card.dart';
+import 'package:animations/animations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -46,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
         page = LectureList();
         break;
       case 1:
-        page = Placeholder();
+        page = const Placeholder();
         break;
       default:
         throw UnimplementedError('No page for $_selectedIndex');
@@ -72,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(
           widget.title,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontStyle: FontStyle.italic,
           ),
@@ -146,7 +147,27 @@ class LectureList extends StatelessWidget {
           crossAxisSpacing: 10.0,
         ),
         children: [
-          for (var lecture in lectures) HoverImage(lecture: lecture),
+          for (var lecture in lectures)
+            OpenContainer(
+              transitionType: ContainerTransitionType.fadeThrough,
+              closedBuilder: (context, action) {
+                return HoverImage(lecture: lecture);
+              },
+              openBuilder: (context, action) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back_ios),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    const Text('detail page'),
+                  ],
+                );
+              },
+            )
         ],
       ),
     );
@@ -199,8 +220,8 @@ class _HoverImageState extends State<HoverImage> {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: '${widget.lecture.title}',
-                        style: TextStyle(fontFamily: 'Diodrum'),
+                        text: widget.lecture.title,
+                        style: const TextStyle(fontFamily: 'Diodrum'),
                       ),
                     ],
                   ),
@@ -211,8 +232,8 @@ class _HoverImageState extends State<HoverImage> {
                 //   overflow: TextOverflow.ellipsis,
                 // ),
                 description: Text(
-                  '${widget.lecture.site.name}',
-                  style: TextStyle(
+                  widget.lecture.site.name,
+                  style: const TextStyle(
                     color: Colors.grey,
                   ),
                 ),
