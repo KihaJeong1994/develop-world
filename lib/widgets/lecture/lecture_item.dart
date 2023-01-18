@@ -86,17 +86,84 @@ class _LectureItemState extends State<LectureItem> {
         );
       },
       openBuilder: (context, action) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            IconButton(
+        return Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
               icon: const Icon(Icons.arrow_back_ios),
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
-            const Text('detail page'),
-          ],
+            title: Text(widget.lecture.title),
+          ),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.asset(
+                    'images/lectures/${widget.lecture.image}',
+                    width: MediaQuery.of(context).size.width / 2,
+                    height: MediaQuery.of(context).size.width / 4,
+                  ),
+                  Expanded(
+                    child: Table(
+                      border: TableBorder.all(),
+                      columnWidths: const <int, TableColumnWidth>{
+                        0: IntrinsicColumnWidth(),
+                        1: FlexColumnWidth(),
+                      },
+                      defaultVerticalAlignment:
+                          TableCellVerticalAlignment.middle,
+                      children: <TableRow>[
+                        TableRow(
+                          children: <Widget>[
+                            const SizedBox(
+                              child: Text('제목'),
+                            ),
+                            TableCell(
+                              verticalAlignment: TableCellVerticalAlignment.top,
+                              child: SizedBox(
+                                child: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: widget.lecture.title
+                                            .replaceAll('', '\u{200B}'),
+                                        style: const TextStyle(
+                                          fontFamily: 'Diodrum',
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  maxLines: 2,
+                                  // overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        TableRow(
+                          children: <Widget>[
+                            const SizedBox(
+                              child: Text('사이트'),
+                            ),
+                            Container(
+                              child: Text(
+                                widget.lecture.site.name,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         );
       },
     );
