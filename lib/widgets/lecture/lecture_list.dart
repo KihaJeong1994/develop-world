@@ -1,4 +1,3 @@
-import 'package:animations/animations.dart';
 import 'package:develop_world/widgets/lecture/lecture_item.dart';
 import 'package:flutter/material.dart';
 
@@ -38,29 +37,7 @@ class LectureList extends StatelessWidget {
           mainAxisSpacing: 10.0,
           crossAxisSpacing: 10.0,
         ),
-        children: [
-          for (var lecture in lectures)
-            OpenContainer(
-              transitionType: ContainerTransitionType.fadeThrough,
-              closedBuilder: (context, action) {
-                return LectureItem(lecture: lecture);
-              },
-              openBuilder: (context, action) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.arrow_back_ios),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    const Text('detail page'),
-                  ],
-                );
-              },
-            )
-        ],
+        children: [for (var lecture in lectures) LectureItem(lecture: lecture)],
       ),
     );
   }
