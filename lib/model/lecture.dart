@@ -1,11 +1,13 @@
 class Lecture {
   String title, image;
   Site site;
+  double rate;
 
   Lecture({
     required this.title,
     required this.site,
     required this.image,
+    required this.rate,
   });
 }
 

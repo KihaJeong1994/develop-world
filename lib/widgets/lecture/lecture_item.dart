@@ -4,6 +4,8 @@ import 'package:image_card/image_card.dart';
 
 import '../../model/lecture.dart';
 
+const maxRate = 5;
+
 class LectureItem extends StatefulWidget {
   const LectureItem({
     Key? key,
@@ -25,6 +27,7 @@ class _LectureItemState extends State<LectureItem> {
     return OpenContainer(
       transitionType: ContainerTransitionType.fadeThrough,
       closedBuilder: (context, action) {
+        var lecture = widget.lecture;
         return MouseRegion(
           onEnter: (_) {
             setState(() {
@@ -46,15 +49,14 @@ class _LectureItemState extends State<LectureItem> {
                     // width: 320,
                     // heightImage: 160,
                     imageProvider: AssetImage(
-                      'images/lectures/${widget.lecture.image}',
+                      'images/lectures/${lecture.image}',
                     ),
                     // tags: [_tag('Category', () {}), _tag('Product', () {})],
                     title: RichText(
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text:
-                                widget.lecture.title.replaceAll('', '\u{200B}'),
+                            text: lecture.title.replaceAll('', '\u{200B}'),
                             style: const TextStyle(
                               fontFamily: 'Diodrum',
                               color: Colors.black,
@@ -69,11 +71,17 @@ class _LectureItemState extends State<LectureItem> {
                     //   '${widget.lecture.title}',
                     //   overflow: TextOverflow.ellipsis,
                     // ),
-                    description: Text(
-                      widget.lecture.site.name,
-                      style: const TextStyle(
-                        color: Colors.grey,
-                      ),
+                    description: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          lecture.site.name,
+                          style: const TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
+                        FiveStarRate(lecture: lecture),
+                      ],
                     ),
                   ),
                   // Image.asset(
@@ -166,6 +174,45 @@ class _LectureItemState extends State<LectureItem> {
           ),
         );
       },
+    );
+  }
+}
+
+class FiveStarRate extends StatelessWidget {
+  const FiveStarRate({
+    Key? key,
+    required this.lecture,
+  }) : super(key: key);
+
+  final Lecture lecture;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        for (int i = 0; i < lecture.rate.floor(); i++)
+          const Icon(
+            Icons.star,
+            color: Colors.amber,
+          ),
+        if (lecture.rate - lecture.rate.floor() > 0)
+          const Icon(
+            Icons.star_half,
+            color: Colors.amber,
+          ),
+        for (int i = 0; i <= 5 - lecture.rate - 1; i++)
+          const Icon(
+            Icons.star_border,
+            color: Colors.amber,
+          ),
+        Text(
+          '${lecture.rate}',
+          style: TextStyle(
+            color: Colors.black.withOpacity(0.5),
+          ),
+        )
+      ],
     );
   }
 }
