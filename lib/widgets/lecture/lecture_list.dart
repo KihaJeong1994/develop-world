@@ -2,12 +2,18 @@ import 'package:develop_world/widgets/lecture/lecture_item.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/lecture.dart';
+import 'lecture_search.dart';
 
-class LectureList extends StatelessWidget {
-  LectureList({
+class LectureList extends StatefulWidget {
+  const LectureList({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<LectureList> createState() => _LectureListState();
+}
+
+class _LectureListState extends State<LectureList> {
   var lectures = [
     Lecture(
       title: '스프링 입문 - 코드로 배우는 스프링 부트, 웹 MVC, DB 접근 기술',
@@ -31,16 +37,32 @@ class LectureList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: GridView(
-        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 300,
-          childAspectRatio:
-              MediaQuery.of(context).size.width >= 800 ? 300 / 330 : 300 / 390,
-          mainAxisSpacing: 10.0,
-          crossAxisSpacing: 10.0,
-        ),
-        children: [for (var lecture in lectures) LectureItem(lecture: lecture)],
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 5,
+        horizontal: 5,
+      ),
+      child: Column(
+        children: [
+          LectureSearch(),
+          Expanded(
+            child: Center(
+              child: GridView(
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 300,
+                  childAspectRatio: MediaQuery.of(context).size.width >= 800
+                      ? 300 / 330
+                      : 300 / 390,
+                  mainAxisSpacing: 10.0,
+                  crossAxisSpacing: 10.0,
+                ),
+                children: [
+                  for (var lecture in lectures) LectureItem(lecture: lecture)
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
