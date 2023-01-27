@@ -34,6 +34,22 @@ class _LectureListState extends State<LectureList> {
       rate: 5,
     ),
   ];
+  String? title;
+  String? site;
+  int? rate;
+
+  onSearchPressed(
+      {String? titleSearch, String? selectedSite, int? selectedRate}) {
+    setState(() {
+      if (titleSearch != null && titleSearch!.isEmpty) {
+        titleSearch = null;
+      }
+      title = titleSearch;
+      site = selectedSite;
+      rate = selectedRate;
+      print('$title, $site, $rate');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +60,7 @@ class _LectureListState extends State<LectureList> {
       ),
       child: Column(
         children: [
-          LectureSearch(),
+          LectureSearch(onSearchPressed: onSearchPressed),
           Expanded(
             child: Center(
               child: GridView(

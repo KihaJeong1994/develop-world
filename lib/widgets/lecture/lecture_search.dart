@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import '../../model/lecture.dart';
 
 class LectureSearch extends StatefulWidget {
-  const LectureSearch({
+  Function({String? titleSearch, String? selectedSite, int? selectedRate})
+      onSearchPressed;
+  LectureSearch({
     Key? key,
+    required this.onSearchPressed,
   }) : super(key: key);
 
   @override
@@ -12,9 +15,10 @@ class LectureSearch extends StatefulWidget {
 }
 
 class _LectureSearchState extends State<LectureSearch> {
-  String site = '';
-
-  int rate = 0;
+  String? title;
+  String? site;
+  int? rate;
+  final titleSearchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +27,12 @@ class _LectureSearchState extends State<LectureSearch> {
         width: 200,
         height: 30,
         child: TextField(
+          controller: titleSearchController,
+          onChanged: (text) {
+            setState(() {
+              title = text;
+            });
+          },
           decoration: InputDecoration(
             label: Icon(
               Icons.search,
@@ -39,7 +49,7 @@ class _LectureSearchState extends State<LectureSearch> {
         value: site,
         items: [
           const DropdownMenuItem(
-            value: '',
+            value: null,
             child: Text('사이트'),
           ),
           for (var site in Site.values)
@@ -50,7 +60,7 @@ class _LectureSearchState extends State<LectureSearch> {
         ],
         onChanged: ((value) {
           setState(() {
-            site = value!;
+            site = value;
           });
         }),
         borderRadius: BorderRadius.circular(15),
@@ -62,7 +72,7 @@ class _LectureSearchState extends State<LectureSearch> {
         value: rate,
         items: [
           const DropdownMenuItem(
-            value: 0,
+            value: null,
             child: Text('별점'),
           ),
           for (var rate in [1, 2, 3, 4, 5])
@@ -73,7 +83,7 @@ class _LectureSearchState extends State<LectureSearch> {
         ],
         onChanged: ((value) {
           setState(() {
-            rate = value!;
+            rate = value;
           });
         }),
         borderRadius: BorderRadius.circular(15),
@@ -81,7 +91,16 @@ class _LectureSearchState extends State<LectureSearch> {
       const SizedBox(
         width: 30,
       ),
-      ElevatedButton(onPressed: () {}, child: const Text('검색')),
+      ElevatedButton(
+        onPressed: () {
+          widget.onSearchPressed(
+            titleSearch: title,
+            selectedSite: site,
+            selectedRate: rate,
+          );
+        },
+        child: const Text('검색'),
+      ),
     ];
     if (MediaQuery.of(context).size.width >= 800) {
       return Row(
