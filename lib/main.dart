@@ -1,7 +1,9 @@
 import 'package:develop_world/widgets/lecture/lecture_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+Future<void> main() async {
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
@@ -42,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget page;
     switch (_selectedIndex) {
       case 0:
-        page = LectureList();
+        page = const LectureList();
         break;
       case 1:
         page = const Placeholder();

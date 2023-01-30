@@ -9,6 +9,12 @@ class Lecture {
     required this.image,
     required this.rate,
   });
+
+  Lecture.fromJson(Map<String, dynamic> json)
+      : title = json['title'],
+        site = Site.values.byName(json['site']),
+        image = json['image'],
+        rate = json['rate'];
 }
 
 enum Site {
@@ -17,4 +23,8 @@ enum Site {
 
   const Site(this.name);
   final String name;
+
+  String siteToString() {
+    return toString().split('.').last;
+  }
 }

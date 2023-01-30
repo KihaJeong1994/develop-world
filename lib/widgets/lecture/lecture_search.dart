@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../model/lecture.dart';
 
 class LectureSearch extends StatefulWidget {
-  Function({String? titleSearch, String? selectedSite, int? selectedRate})
+  Function({String? titleSearch, Site? selectedSite, num? selectedRate})
       onSearchPressed;
   LectureSearch({
     Key? key,
@@ -16,8 +16,8 @@ class LectureSearch extends StatefulWidget {
 
 class _LectureSearchState extends State<LectureSearch> {
   String? title;
-  String? site;
-  int? rate;
+  Site? site;
+  num? rate;
   final titleSearchController = TextEditingController();
 
   @override
@@ -54,7 +54,7 @@ class _LectureSearchState extends State<LectureSearch> {
           ),
           for (var site in Site.values)
             DropdownMenuItem(
-              value: site.name,
+              value: site,
               child: Text(site.name),
             ),
         ],
