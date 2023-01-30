@@ -55,7 +55,7 @@ class _LectureListState extends State<LectureList> {
                         maxCrossAxisExtent: 300,
                         childAspectRatio:
                             MediaQuery.of(context).size.width >= 800
-                                ? 300 / 330
+                                ? 300 / 340
                                 : 300 / 390,
                         mainAxisSpacing: 10.0,
                         crossAxisSpacing: 10.0,
