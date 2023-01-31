@@ -3,7 +3,7 @@ import 'package:develop_world/widgets/lecture/lecture_item.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/lecture.dart';
-import 'lecture_search.dart';
+import '../../widgets/lecture/lecture_search.dart';
 
 class LectureList extends StatefulWidget {
   const LectureList({

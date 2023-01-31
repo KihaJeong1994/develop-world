@@ -1,9 +1,10 @@
 class Lecture {
-  String title, image;
+  String id, title, image;
   Site site;
   double rate;
 
   Lecture({
+    required this.id,
     required this.title,
     required this.site,
     required this.image,
@@ -11,7 +12,8 @@ class Lecture {
   });
 
   Lecture.fromJson(Map<String, dynamic> json)
-      : title = json['title'],
+      : id = json['id'],
+        title = json['title'],
         site = Site.values.byName(json['site']),
         image = json['image'],
         rate = json['rate'];
