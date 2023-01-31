@@ -31,9 +31,12 @@ class RouteGenerator {
       );
     } else if (isLectureDetail(settings.name)) {
       var id = settings.name!.split('/').last;
-      return MaterialPageRoute(
+      return PageRouteBuilder(
         settings: settings,
-        builder: (context) => LectureDetail(id: id),
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            LectureDetail(id: id),
+        transitionDuration: Duration.zero,
+        reverseTransitionDuration: Duration.zero,
       );
     } else {
       return PageRouteBuilder(

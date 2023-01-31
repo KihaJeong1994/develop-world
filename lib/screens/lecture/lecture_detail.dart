@@ -52,7 +52,6 @@ class _LectureDetailState extends State<LectureDetail> {
 
   @override
   Widget build(BuildContext context) {
-    print(timeago.format(DateTime.now(), locale: 'kr'));
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -284,25 +283,22 @@ class LecturePicture extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = max(300, MediaQuery.of(context).size.width / 3);
-    return Hero(
-      tag: id,
-      child: Container(
-        clipBehavior: Clip.hardEdge,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              offset: const Offset(5, 5),
-              blurRadius: 15,
-            )
-          ],
-        ),
-        child: Image.asset(
-          'images/lectures/$image',
-          width: width,
-          height: width / 1.5,
-        ),
+    return Container(
+      clipBehavior: Clip.hardEdge,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            offset: const Offset(5, 5),
+            blurRadius: 15,
+          )
+        ],
+      ),
+      child: Image.asset(
+        'images/lectures/$image',
+        width: width,
+        height: width / 1.5,
       ),
     );
   }

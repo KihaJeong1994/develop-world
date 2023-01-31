@@ -47,46 +47,43 @@ class _LectureItemState extends State<LectureItem> {
             curve: Curves.easeInOut,
             child: Column(
               children: [
-                Hero(
-                  tag: lecture.id,
-                  child: FillImageCard(
-                    // width: 320,
-                    // heightImage: 160,
-                    imageProvider: AssetImage(
-                      'images/lectures/${lecture.image}',
-                    ),
-                    // tags: [_tag('Category', () {}), _tag('Product', () {})],
-                    title: RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: lecture.title.replaceAll('', '\u{200B}'),
-                            style: const TextStyle(
-                              fontFamily: 'Diodrum',
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    // Text(
-                    //   '${widget.lecture.title}',
-                    //   overflow: TextOverflow.ellipsis,
-                    // ),
-                    description: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                FillImageCard(
+                  // width: 320,
+                  // heightImage: 160,
+                  imageProvider: AssetImage(
+                    'images/lectures/${lecture.image}',
+                  ),
+                  // tags: [_tag('Category', () {}), _tag('Product', () {})],
+                  title: RichText(
+                    text: TextSpan(
                       children: [
-                        Text(
-                          lecture.site.name,
+                        TextSpan(
+                          text: lecture.title.replaceAll('', '\u{200B}'),
                           style: const TextStyle(
-                            color: Colors.grey,
+                            fontFamily: 'Diodrum',
+                            color: Colors.black,
                           ),
                         ),
-                        FiveStarRate(rate: lecture.rate),
                       ],
                     ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  // Text(
+                  //   '${widget.lecture.title}',
+                  //   overflow: TextOverflow.ellipsis,
+                  // ),
+                  description: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        lecture.site.name,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                      FiveStarRate(rate: lecture.rate),
+                    ],
                   ),
                 ),
               ],
