@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:develop_world/model/lecture.dart';
+import 'package:develop_world/model/lecture_review.dart';
 import 'package:develop_world/widgets/common/five_star_rate.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -18,38 +19,148 @@ class LectureDetail extends StatefulWidget {
 
 class _LectureDetailState extends State<LectureDetail> {
   String image = 'lecture1.png';
+  List<LectureReview> reviews = [
+    LectureReview(
+      id: "bacd",
+      lectureId: "63d722e5b7ced62feb22b86d",
+      createdBy: 'cainaoewr',
+      review: "너무너무 좋은 강의입니다!",
+      rate: 5,
+    ),
+    LectureReview(
+      id: "bacd",
+      lectureId: "63d722e5b7ced62feb22b86d",
+      createdBy: 'gecewd',
+      review: "어서 다음 강의 출시 해주세요~",
+      rate: 4.5,
+    ),
+    LectureReview(
+      id: "bacd",
+      lectureId: "63d722e5b7ced62feb22b86d",
+      createdBy: 'gecaer',
+      review: "별로인듯;;",
+      rate: 2.5,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: const Icon(Icons.arrow_back),
-            ),
-          ],
-        ),
-        MediaQuery.of(context).size.width >= 800
-            ? Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(child: LecturePicture(id: widget.id, image: image)),
-                  Flexible(child: LectureInfo()),
-                ],
-              )
-            : Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(Icons.arrow_back),
+              ),
+            ],
+          ),
+          MediaQuery.of(context).size.width >= 800
+              ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
                     Flexible(
                         child: LecturePicture(id: widget.id, image: image)),
                     Flexible(child: LectureInfo()),
-                  ]),
-      ],
+                  ],
+                )
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                        child: LecturePicture(id: widget.id, image: image)),
+                    Flexible(child: LectureInfo()),
+                  ],
+                ),
+          const SizedBox(
+            height: 50,
+          ),
+          Column(
+            children: [
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Text(
+                    '수강평',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              LectureReviewList(reviews: reviews),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class LectureReviewList extends StatelessWidget {
+  const LectureReviewList({
+    Key? key,
+    required this.reviews,
+  }) : super(key: key);
+
+  final List<LectureReview> reviews;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 500,
+      child: ListView.builder(
+        itemCount: reviews.length,
+        itemBuilder: (context, index) {
+          return LectureReviewItem(lectureReview: reviews[index]);
+        },
+      ),
+    );
+  }
+}
+
+class LectureReviewItem extends StatelessWidget {
+  const LectureReviewItem({
+    Key? key,
+    required this.lectureReview,
+  }) : super(key: key);
+
+  final LectureReview lectureReview;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).secondaryHeaderColor,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(lectureReview.createdBy),
+                  FiveStarRate(rate: lectureReview.rate),
+                ],
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Text('${lectureReview.review} '),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
