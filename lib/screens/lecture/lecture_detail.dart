@@ -97,16 +97,54 @@ class _LectureDetailState extends State<LectureDetail> {
                 ),
                 Column(
                   children: [
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text(
-                          '수강평',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Text(
+                            '수강평',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
+                        ),
+                        ElevatedButton(
+                          onPressed: (() {}),
+                          child: const Text('쓰기'),
+                        )
+                      ],
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).secondaryHeaderColor,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      height: 220,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('Spring master'),
+                            const SizedBox(height: 5),
+                            const TextField(
+                              maxLines: 8,
+                              decoration: InputDecoration.collapsed(
+                                filled: true,
+                                fillColor: Colors.white,
+                                hintText: "수강평을 입력해주세요",
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: ElevatedButton(
+                                onPressed: (() {}),
+                                child: const Text('입력'),
+                              ),
+                            )
+                          ],
                         ),
                       ),
                     ),
