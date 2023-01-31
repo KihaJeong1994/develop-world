@@ -5,6 +5,7 @@ import 'package:develop_world/model/lecture_review.dart';
 import 'package:develop_world/widgets/common/five_star_rate.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class LectureDetail extends StatefulWidget {
   final String id;
@@ -26,6 +27,8 @@ class _LectureDetailState extends State<LectureDetail> {
       createdBy: 'cainaoewr',
       review: "너무너무 좋은 강의입니다!",
       rate: 5,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
     ),
     LectureReview(
       id: "bacd",
@@ -33,6 +36,8 @@ class _LectureDetailState extends State<LectureDetail> {
       createdBy: 'gecewd',
       review: "어서 다음 강의 출시 해주세요~",
       rate: 4.5,
+      createdAt: DateTime.now().subtract(const Duration(minutes: 15)),
+      updatedAt: DateTime.now().subtract(const Duration(minutes: 15)),
     ),
     LectureReview(
       id: "bacd",
@@ -40,11 +45,14 @@ class _LectureDetailState extends State<LectureDetail> {
       createdBy: 'gecaer',
       review: "별로인듯;;",
       rate: 2.5,
+      createdAt: DateTime.now().subtract(const Duration(days: 1)),
+      updatedAt: DateTime.now().subtract(const Duration(days: 1)),
     ),
   ];
 
   @override
   Widget build(BuildContext context) {
+    print(timeago.format(DateTime.now(), locale: 'kr'));
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -161,6 +169,14 @@ class LectureReviewItem extends StatelessWidget {
               Row(
                 children: [
                   Text(lectureReview.createdBy),
+                  const SizedBox(width: 5),
+                  Text(
+                    timeago.format(lectureReview.updatedAt, locale: 'kr'),
+                    style: const TextStyle(
+                      fontSize: 10,
+                    ),
+                  ),
+                  const SizedBox(width: 5),
                   FiveStarRate(rate: lectureReview.rate),
                 ],
               ),

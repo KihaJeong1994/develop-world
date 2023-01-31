@@ -2,6 +2,7 @@ class Lecture {
   String id, title, image;
   Site site;
   double rate;
+  DateTime createdAt, updatedAt;
 
   Lecture({
     required this.id,
@@ -9,6 +10,8 @@ class Lecture {
     required this.site,
     required this.image,
     required this.rate,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   Lecture.fromJson(Map<String, dynamic> json)
@@ -16,7 +19,9 @@ class Lecture {
         title = json['title'],
         site = Site.values.byName(json['site']),
         image = json['image'],
-        rate = json['rate'];
+        rate = json['rate'],
+        createdAt = DateTime.parse(json['createdAt']),
+        updatedAt = DateTime.parse(json['updatedAt']);
 }
 
 enum Site {

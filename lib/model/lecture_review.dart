@@ -1,6 +1,7 @@
 class LectureReview {
   String id, lectureId, review, createdBy;
   double rate;
+  DateTime createdAt, updatedAt;
 
   LectureReview({
     required this.id,
@@ -8,5 +9,7 @@ class LectureReview {
     required this.createdBy,
     required this.review,
     required this.rate,
+    required this.createdAt,
+    required this.updatedAt,
   });
 }
