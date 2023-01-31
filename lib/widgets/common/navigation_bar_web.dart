@@ -16,7 +16,17 @@ class _NavigationBarWebState extends State<NavigationBarWeb> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        // border:
+        //     const Border.symmetric(vertical: BorderSide(color: Colors.black)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            offset: const Offset(2, 0),
+          ),
+        ],
+      ),
       width: MediaQuery.of(context).size.width >= 600 ? 220 : 80,
       child: Column(
         mainAxisSize: MainAxisSize.max,

@@ -57,45 +57,56 @@ class _LectureDetailState extends State<LectureDetail> {
               ),
             ],
           ),
-          MediaQuery.of(context).size.width >= 800
-              ? Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Flexible(
-                        child: LecturePicture(id: widget.id, image: image)),
-                    Flexible(child: LectureInfo()),
-                  ],
-                )
-              : Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Flexible(
-                        child: LecturePicture(id: widget.id, image: image)),
-                    Flexible(child: LectureInfo()),
-                  ],
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 50,
+            ),
+            child: Column(
+              children: [
+                MediaQuery.of(context).size.width >= 800
+                    ? Row(
+                        mainAxisSize: MainAxisSize.min,
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                              child:
+                                  LecturePicture(id: widget.id, image: image)),
+                          Flexible(child: LectureInfo()),
+                        ],
+                      )
+                    : Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                              child:
+                                  LecturePicture(id: widget.id, image: image)),
+                          Flexible(child: LectureInfo()),
+                        ],
+                      ),
+                const SizedBox(
+                  height: 50,
                 ),
-          const SizedBox(
-            height: 50,
-          ),
-          Column(
-            children: [
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Text(
-                    '수강평',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                Column(
+                  children: [
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Text(
+                          '수강평',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    LectureReviewList(reviews: reviews),
+                  ],
                 ),
-              ),
-              LectureReviewList(reviews: reviews),
-            ],
+              ],
+            ),
           ),
         ],
       ),
