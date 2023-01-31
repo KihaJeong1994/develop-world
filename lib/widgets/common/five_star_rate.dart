@@ -12,6 +12,7 @@ class FiveStarRate extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisSize: MainAxisSize.min,
       children: [
         for (int i = 0; i < rate.floor(); i++)
           const Icon(
