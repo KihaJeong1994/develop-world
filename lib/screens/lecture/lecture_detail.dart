@@ -4,6 +4,7 @@ import 'package:develop_world/widgets/common/five_star_rate.dart';
 import 'package:develop_world/widgets/lecture/lecture_picture.dart';
 import 'package:develop_world/widgets/lecture/lecture_review_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LectureDetail extends StatefulWidget {
@@ -73,7 +74,7 @@ class _LectureDetailState extends State<LectureDetail> {
                 const SizedBox(
                   height: 50,
                 ),
-                LectureReviewPart(reviews: reviews),
+                LectureReviewPart(lectureId: widget.id, reviews: reviews),
               ],
             ),
           ),
@@ -115,13 +116,37 @@ class LectureDetailPart extends StatelessWidget {
   }
 }
 
-class LectureReviewPart extends StatelessWidget {
-  const LectureReviewPart({
+class LectureReviewPart extends StatefulWidget {
+  LectureReviewPart({
     Key? key,
+    required this.lectureId,
     required this.reviews,
   }) : super(key: key);
 
+  String lectureId;
   final List<LectureReview> reviews;
+
+  @override
+  State<LectureReviewPart> createState() => _LectureReviewPartState();
+}
+
+class _LectureReviewPartState extends State<LectureReviewPart> {
+  bool isWritingReview = false;
+  onSubmitPressed({required String review, required double rate}) {
+    setState(() {
+      isWritingReview = false;
+      widget.reviews.insert(
+          0,
+          LectureReview(
+              id: null,
+              lectureId: widget.lectureId,
+              createdBy: "Spring master",
+              review: review,
+              rate: rate,
+              createdAt: DateTime.now(),
+              updatedAt: DateTime.now()));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,45 +166,94 @@ class LectureReviewPart extends StatelessWidget {
               ),
             ),
             ElevatedButton(
-              onPressed: (() {}),
-              child: const Text('쓰기'),
+              onPressed: (() {
+                setState(() {
+                  isWritingReview = !isWritingReview;
+                });
+              }),
+              child: Text(!isWritingReview ? '쓰기' : '취소'),
             )
           ],
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).secondaryHeaderColor,
-            borderRadius: BorderRadius.circular(15),
-          ),
-          height: 220,
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        if (isWritingReview)
+          LectureReviewForm(onSubmitPressed: onSubmitPressed),
+        LectureReviewList(reviews: widget.reviews),
+      ],
+    );
+  }
+}
+
+class LectureReviewForm extends StatelessWidget {
+  Function({required String review, required double rate}) onSubmitPressed;
+  LectureReviewForm({
+    Key? key,
+    required this.onSubmitPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final lectureReviewController = TextEditingController();
+    String review = '';
+    double rate = 5;
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).secondaryHeaderColor,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      height: 220,
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Spring master'),
+            const SizedBox(height: 5),
+            TextField(
+              controller: lectureReviewController,
+              onChanged: (value) {
+                review = value;
+              },
+              maxLines: 7,
+              decoration: const InputDecoration.collapsed(
+                filled: true,
+                fillColor: Colors.white,
+                hintText: "수강평을 입력해주세요",
+              ),
+            ),
+            const SizedBox(height: 5),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Spring master'),
-                const SizedBox(height: 5),
-                const TextField(
-                  maxLines: 8,
-                  decoration: InputDecoration.collapsed(
-                    filled: true,
-                    fillColor: Colors.white,
-                    hintText: "수강평을 입력해주세요",
+                RatingBar.builder(
+                  initialRating: 5,
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  allowHalfRating: true,
+                  itemCount: 5,
+                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  itemBuilder: (context, _) => const Icon(
+                    Icons.star,
+                    color: Colors.amber,
                   ),
+                  onRatingUpdate: (rating) {
+                    rate = rating;
+                  },
                 ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: ElevatedButton(
-                    onPressed: (() {}),
-                    child: const Text('입력'),
+                ElevatedButton(
+                  onPressed: () => onSubmitPressed(
+                    review: review,
+                    rate: rate,
                   ),
-                )
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          Theme.of(context).primaryColor.withOpacity(0.8)),
+                  child: const Text('입력'),
+                ),
               ],
             ),
-          ),
+          ],
         ),
-        LectureReviewList(reviews: reviews),
-      ],
+      ),
     );
   }
 }

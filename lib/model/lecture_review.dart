@@ -1,5 +1,6 @@
 class LectureReview {
-  String id, lectureId, review, createdBy;
+  String? id, lectureId;
+  String review, createdBy;
   double rate;
   DateTime createdAt, updatedAt;
 
