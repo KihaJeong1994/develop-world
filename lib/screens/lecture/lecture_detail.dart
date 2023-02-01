@@ -1,11 +1,10 @@
-import 'dart:math';
-
 import 'package:develop_world/model/lecture.dart';
 import 'package:develop_world/model/lecture_review.dart';
 import 'package:develop_world/widgets/common/five_star_rate.dart';
+import 'package:develop_world/widgets/lecture/lecture_picture.dart';
+import 'package:develop_world/widgets/lecture/lecture_review_item.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class LectureDetail extends StatefulWidget {
   final String id;
@@ -70,91 +69,117 @@ class _LectureDetailState extends State<LectureDetail> {
             ),
             child: Column(
               children: [
-                MediaQuery.of(context).size.width >= 800
-                    ? Row(
-                        mainAxisSize: MainAxisSize.min,
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Flexible(
-                              child:
-                                  LecturePicture(id: widget.id, image: image)),
-                          Flexible(child: LectureInfo()),
-                        ],
-                      )
-                    : Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Flexible(
-                              child:
-                                  LecturePicture(id: widget.id, image: image)),
-                          Flexible(child: LectureInfo()),
-                        ],
-                      ),
+                LectureDetailPart(image: image),
                 const SizedBox(
                   height: 50,
                 ),
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(left: 10),
-                          child: Text(
-                            '수강평',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        ElevatedButton(
-                          onPressed: (() {}),
-                          child: const Text('쓰기'),
-                        )
-                      ],
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).secondaryHeaderColor,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      height: 220,
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('Spring master'),
-                            const SizedBox(height: 5),
-                            const TextField(
-                              maxLines: 8,
-                              decoration: InputDecoration.collapsed(
-                                filled: true,
-                                fillColor: Colors.white,
-                                hintText: "수강평을 입력해주세요",
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.bottomRight,
-                              child: ElevatedButton(
-                                onPressed: (() {}),
-                                child: const Text('입력'),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    LectureReviewList(reviews: reviews),
-                  ],
-                ),
+                LectureReviewPart(reviews: reviews),
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class LectureDetailPart extends StatelessWidget {
+  const LectureDetailPart({
+    Key? key,
+    required this.image,
+  }) : super(key: key);
+
+  final String image;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: MediaQuery.of(context).size.width >= 800
+          ? Row(
+              mainAxisSize: MainAxisSize.min,
+              // mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(child: LecturePicture(image: image)),
+                Flexible(child: LectureInfo()),
+              ],
+            )
+          : Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(child: LecturePicture(image: image)),
+                Flexible(child: LectureInfo()),
+              ],
+            ),
+    );
+  }
+}
+
+class LectureReviewPart extends StatelessWidget {
+  const LectureReviewPart({
+    Key? key,
+    required this.reviews,
+  }) : super(key: key);
+
+  final List<LectureReview> reviews;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Text(
+                '수강평',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: (() {}),
+              child: const Text('쓰기'),
+            )
+          ],
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).secondaryHeaderColor,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          height: 220,
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Spring master'),
+                const SizedBox(height: 5),
+                const TextField(
+                  maxLines: 8,
+                  decoration: InputDecoration.collapsed(
+                    filled: true,
+                    fillColor: Colors.white,
+                    hintText: "수강평을 입력해주세요",
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: ElevatedButton(
+                    onPressed: (() {}),
+                    child: const Text('입력'),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        LectureReviewList(reviews: reviews),
+      ],
     );
   }
 }
@@ -176,54 +201,6 @@ class LectureReviewList extends StatelessWidget {
         itemBuilder: (context, index) {
           return LectureReviewItem(lectureReview: reviews[index]);
         },
-      ),
-    );
-  }
-}
-
-class LectureReviewItem extends StatelessWidget {
-  const LectureReviewItem({
-    Key? key,
-    required this.lectureReview,
-  }) : super(key: key);
-
-  final LectureReview lectureReview;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).secondaryHeaderColor,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(lectureReview.createdBy),
-                  const SizedBox(width: 5),
-                  Text(
-                    timeago.format(lectureReview.updatedAt, locale: 'kr'),
-                    style: const TextStyle(
-                      fontSize: 10,
-                    ),
-                  ),
-                  const SizedBox(width: 5),
-                  FiveStarRate(rate: lectureReview.rate),
-                ],
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Text('${lectureReview.review} '),
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -265,40 +242,6 @@ class LectureInfo extends StatelessWidget {
             description,
           ),
         ],
-      ),
-    );
-  }
-}
-
-class LecturePicture extends StatelessWidget {
-  const LecturePicture({
-    Key? key,
-    required this.id,
-    required this.image,
-  }) : super(key: key);
-
-  final String id;
-  final String image;
-
-  @override
-  Widget build(BuildContext context) {
-    double width = max(300, MediaQuery.of(context).size.width / 3);
-    return Container(
-      clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            offset: const Offset(5, 5),
-            blurRadius: 15,
-          )
-        ],
-      ),
-      child: Image.asset(
-        'images/lectures/$image',
-        width: width,
-        height: width / 1.5,
       ),
     );
   }
