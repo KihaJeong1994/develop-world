@@ -1,11 +1,11 @@
 import 'package:develop_world/model/lecture.dart';
 import 'package:develop_world/model/lecture_review.dart';
-import 'package:develop_world/widgets/common/five_star_rate.dart';
+import 'package:develop_world/services/lecture/lecture_api_service.dart';
+import 'package:develop_world/widgets/lecture/lecture_info.dart';
 import 'package:develop_world/widgets/lecture/lecture_picture.dart';
 import 'package:develop_world/widgets/lecture/lecture_review_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class LectureDetail extends StatefulWidget {
   final String id;
@@ -19,6 +19,7 @@ class LectureDetail extends StatefulWidget {
 }
 
 class _LectureDetailState extends State<LectureDetail> {
+  late Future<Lecture> lectureFuture;
   String image = 'lecture1.png';
   List<LectureReview> reviews = [
     LectureReview(
@@ -51,6 +52,12 @@ class _LectureDetailState extends State<LectureDetail> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    lectureFuture = LectureApiService.getLectureDetailById(widget.id);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
@@ -70,7 +77,15 @@ class _LectureDetailState extends State<LectureDetail> {
             ),
             child: Column(
               children: [
-                LectureDetailPart(image: image),
+                FutureBuilder(
+                  future: lectureFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return LectureDetailPart(lecture: snapshot.data!);
+                    }
+                    return const CircularProgressIndicator();
+                  },
+                ),
                 const SizedBox(
                   height: 50,
                 ),
@@ -87,10 +102,10 @@ class _LectureDetailState extends State<LectureDetail> {
 class LectureDetailPart extends StatelessWidget {
   const LectureDetailPart({
     Key? key,
-    required this.image,
+    required this.lecture,
   }) : super(key: key);
 
-  final String image;
+  final Lecture lecture;
 
   @override
   Widget build(BuildContext context) {
@@ -100,16 +115,16 @@ class LectureDetailPart extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               // mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Flexible(child: LecturePicture(image: image)),
-                Flexible(child: LectureInfo()),
+                Flexible(child: LecturePicture(image: lecture.image)),
+                Flexible(child: LectureInfo(lecture: lecture)),
               ],
             )
           : Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Flexible(child: LecturePicture(image: image)),
-                Flexible(child: LectureInfo()),
+                Flexible(child: LecturePicture(image: lecture.image)),
+                Flexible(child: LectureInfo(lecture: lecture)),
               ],
             ),
     );
@@ -275,47 +290,6 @@ class LectureReviewList extends StatelessWidget {
         itemBuilder: (context, index) {
           return LectureReviewItem(lectureReview: reviews[index]);
         },
-      ),
-    );
-  }
-}
-
-class LectureInfo extends StatelessWidget {
-  LectureInfo({
-    Key? key,
-  }) : super(key: key);
-
-  String title = '스프링 입문 - 코드로 배우는 스프링 부트, 웹 MVC, DB 접근 기술';
-  Site site = Site.inflearn;
-  double rate = 4.3;
-  String url =
-      'https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%EC%9E%85%EB%AC%B8-%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8';
-  String description =
-      '스프링 입문자가 예제를 만들어가면서 스프링 웹 애플리케이션 개발 전반을 빠르게 학습할 수 있습니다.';
-  Future<void> _launchUrl() async {
-    if (!await launchUrl(Uri.parse(url))) {
-      throw Exception('Could not launch $url');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(title),
-          TextButton(
-            onPressed: _launchUrl,
-            child: Text(site.name),
-          ),
-          FiveStarRate(rate: rate),
-          Text(
-            description,
-          ),
-        ],
       ),
     );
   }

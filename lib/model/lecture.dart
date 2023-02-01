@@ -1,5 +1,5 @@
 class Lecture {
-  String id, title, image;
+  String id, title, image, url, description;
   Site site;
   double rate;
   DateTime createdAt, updatedAt;
@@ -12,6 +12,8 @@ class Lecture {
     required this.rate,
     required this.createdAt,
     required this.updatedAt,
+    required this.url,
+    required this.description,
   });
 
   Lecture.fromJson(Map<String, dynamic> json)
@@ -20,6 +22,8 @@ class Lecture {
         site = Site.values.byName(json['site']),
         image = json['image'],
         rate = json['rate'],
+        url = json['url'],
+        description = json['description'],
         createdAt = DateTime.parse(json['createdAt']),
         updatedAt = DateTime.parse(json['updatedAt']);
 }

@@ -35,4 +35,15 @@ class LectureApiService {
       throw Error();
     }
   }
+
+  static Future<Lecture> getLectureDetailById(String id) async {
+    var url = '$baseUrl/$id';
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final json = jsonDecode(utf8.decode(response.bodyBytes));
+      return Lecture.fromJson(json);
+    } else {
+      throw Error();
+    }
+  }
 }
