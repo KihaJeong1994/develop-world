@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:develop_world/model/lecture.dart';
+import 'package:develop_world/model/lecture_review.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
@@ -45,5 +46,36 @@ class LectureApiService {
     } else {
       throw Error();
     }
+  }
+
+  static Future<List<LectureReview>> getReviewsById(String id) async {
+    List<LectureReview> reviews = [];
+    var url = '$baseUrl/$id/review';
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonList =
+          jsonDecode(utf8.decode(response.bodyBytes));
+      for (var json in jsonList) {
+        reviews.add(LectureReview.fromJson(json));
+      }
+      return reviews;
+    } else {
+      throw Error();
+    }
+  }
+
+  static Future<LectureReview> insertReview(LectureReview lectureReview) async {
+    var url = '$baseUrl/${lectureReview.lectureId}/review';
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {"content-type": "application/json"},
+      body: jsonEncode(lectureReview
+          .toJson()), // jsonEncode(lectureReview) fails because cannot turn to json directly
+    );
+    if (response.statusCode == 201) {
+      var json = jsonDecode(utf8.decode(response.bodyBytes));
+      return LectureReview.fromJson(json);
+    }
+    throw Error();
   }
 }

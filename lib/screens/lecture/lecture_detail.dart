@@ -20,41 +20,13 @@ class LectureDetail extends StatefulWidget {
 
 class _LectureDetailState extends State<LectureDetail> {
   late Future<Lecture> lectureFuture;
-  String image = 'lecture1.png';
-  List<LectureReview> reviews = [
-    LectureReview(
-      id: "bacd",
-      lectureId: "63d722e5b7ced62feb22b86d",
-      createdBy: 'cainaoewr',
-      review: "너무너무 좋은 강의입니다!",
-      rate: 5,
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    ),
-    LectureReview(
-      id: "bacd",
-      lectureId: "63d722e5b7ced62feb22b86d",
-      createdBy: 'gecewd',
-      review: "어서 다음 강의 출시 해주세요~",
-      rate: 4.5,
-      createdAt: DateTime.now().subtract(const Duration(minutes: 15)),
-      updatedAt: DateTime.now().subtract(const Duration(minutes: 15)),
-    ),
-    LectureReview(
-      id: "bacd",
-      lectureId: "63d722e5b7ced62feb22b86d",
-      createdBy: 'gecaer',
-      review: "별로인듯;;",
-      rate: 2.5,
-      createdAt: DateTime.now().subtract(const Duration(days: 1)),
-      updatedAt: DateTime.now().subtract(const Duration(days: 1)),
-    ),
-  ];
+  late Future<List<LectureReview>> reviewListFuture;
 
   @override
   void initState() {
     super.initState();
     lectureFuture = LectureApiService.getLectureDetailById(widget.id);
+    reviewListFuture = LectureApiService.getReviewsById(widget.id);
   }
 
   @override
@@ -89,7 +61,16 @@ class _LectureDetailState extends State<LectureDetail> {
                 const SizedBox(
                   height: 50,
                 ),
-                LectureReviewPart(lectureId: widget.id, reviews: reviews),
+                FutureBuilder(
+                  future: reviewListFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return LectureReviewPart(
+                          lectureId: widget.id, reviews: snapshot.data!);
+                    }
+                    return const CircularProgressIndicator();
+                  },
+                )
               ],
             ),
           ),
@@ -149,17 +130,18 @@ class _LectureReviewPartState extends State<LectureReviewPart> {
   bool isWritingReview = false;
   onSubmitPressed({required String review, required double rate}) {
     setState(() {
+      var reviewInstance = LectureReview(
+        id: null,
+        lectureId: widget.lectureId,
+        createdBy: "Spring master",
+        review: review,
+        rate: rate,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
+      LectureApiService.insertReview(reviewInstance);
       isWritingReview = false;
-      widget.reviews.insert(
-          0,
-          LectureReview(
-              id: null,
-              lectureId: widget.lectureId,
-              createdBy: "Spring master",
-              review: review,
-              rate: rate,
-              createdAt: DateTime.now(),
-              updatedAt: DateTime.now()));
+      widget.reviews.insert(0, reviewInstance);
     });
   }
 
