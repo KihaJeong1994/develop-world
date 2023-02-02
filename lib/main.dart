@@ -1,7 +1,7 @@
 import 'package:develop_world/config/kr_custom_messages.dart';
 import 'package:develop_world/routes/router_generator.dart';
 import 'package:develop_world/routes/routes.dart';
-import 'package:develop_world/screens/home_screen.dart';
+import 'package:develop_world/screens/screen_frame.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:url_strategy/url_strategy.dart';
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.blueGrey,
       ),
       initialRoute: routeHome,
-      builder: (context, child) => HomeScreen(child: child!),
+      builder: (context, child) => ScreenFrame(child: child!),
       navigatorKey: navKey,
       onGenerateRoute: RouteGenerator.generateRoute,
       // home: const MyHomePage(

@@ -17,7 +17,7 @@ class _NavigationBarWebState extends State<NavigationBarWeb> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.blueGrey.shade50,
         // border:
         //     const Border.symmetric(vertical: BorderSide(color: Colors.black)),
         boxShadow: [
@@ -33,6 +33,14 @@ class _NavigationBarWebState extends State<NavigationBarWeb> {
         children: [
           const SizedBox(
             height: 20,
+          ),
+          NavigationItem(
+            title: '홈',
+            icon: Icon(
+              Icons.home,
+              color: Theme.of(context).primaryColor,
+            ),
+            routeName: routeHome,
           ),
           NavigationItem(
             title: '인강',

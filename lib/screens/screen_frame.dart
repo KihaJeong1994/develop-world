@@ -1,9 +1,10 @@
+
 import 'package:develop_world/widgets/common/navigation_bar_web.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
+class ScreenFrame extends StatelessWidget {
   final Widget child;
-  const HomeScreen({
+  const ScreenFrame({
     super.key,
     required this.child,
   });
