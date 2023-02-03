@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:develop_world/widgets/home/spinning_dwd.dart';
+import 'package:develop_world/widgets/home/web_instancing_performance.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -43,82 +45,28 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     if (spinTime <= 0) {
       timer.cancel();
     }
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white24,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            RotationTransition(
-              turns: animation,
-              child: Text(
-                'D.W.D',
-                style: TextStyle(
-                  color: Colors.blueAccent,
-                  fontSize:
-                      MediaQuery.of(context).size.width >= 800 ? 200 : 100,
-                  fontWeight: FontWeight.w700,
-                  fontStyle: FontStyle.italic,
-                ),
+    return SingleChildScrollView(
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white24,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              WebglInstancingPerformance(fileName: 'gg'),
+              SizedBox(
+                height: 50,
               ),
-            ),
-            const SizedBox(
-              height: 200,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      speed++;
-                      isSpinning = true;
-                      controllSpinning();
-                    });
-                  },
-                  child: const Icon(Icons.arrow_circle_up_rounded),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      if (speed >= 2) {
-                        speed--;
-                        isSpinning = true;
-                        controllSpinning();
-                      }
-                    });
-                  },
-                  child: const Icon(Icons.arrow_circle_down_rounded),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      if (isSpinning) {
-                        controller.stop();
-                      } else {
-                        controller.repeat();
-                        // controllSpinning();
-                      }
-                      isSpinning = !isSpinning;
-                    });
-                  },
-                  child: isSpinning
-                      ? const Icon(Icons.stop)
-                      : const Icon(Icons.play_arrow),
-                ),
-              ],
-            ),
-          ],
+              // WebGLDwd(fileName: 'dwd'),
+              SpinningDwd(),
+              SizedBox(
+                height: 50,
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -44,6 +44,9 @@ dependencies:
   url_launcher: ^6.1.8
   timeago: ^3.3.0
   flutter_rating_bar: ^4.0.1
+  three_dart: ^0.0.16
+  flutter_gl: ^0.0.21
+  three_dart_jsm: ^0.0.10
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +74,7 @@ flutter:
   assets:
     - images/lectures/ # you should write to the full path of directory
     - .env
+    - fonts/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
