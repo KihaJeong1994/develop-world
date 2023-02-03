@@ -12,6 +12,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   double spinTime = 5;
   double speed = 11;
+  bool isSpinning = true;
   late AnimationController controller = AnimationController(
     duration: Duration(milliseconds: 2000 ~/ speed),
     vsync: this,
@@ -92,6 +93,25 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   },
                   child: const Icon(Icons.arrow_circle_down_rounded),
                 ),
+                const SizedBox(
+                  width: 20,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      if (isSpinning) {
+                        controller.stop();
+                      } else {
+                        controller.repeat();
+                        // controllSpinning();
+                      }
+                      isSpinning = !isSpinning;
+                    });
+                  },
+                  child: isSpinning
+                      ? const Icon(Icons.stop)
+                      : const Icon(Icons.play_arrow),
+                ),
               ],
             ),
           ],
@@ -101,11 +121,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   void controllSpinning() {
-    controller = AnimationController(
-      duration: Duration(milliseconds: 2000 ~/ speed),
-      vsync: this,
-    );
-    animation = CurvedAnimation(parent: controller, curve: Curves.linear);
+    controller.duration = Duration(milliseconds: 2000 ~/ speed);
     controller.repeat();
   }
 }
