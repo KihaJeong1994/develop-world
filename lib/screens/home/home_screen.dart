@@ -28,7 +28,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       setState(() {
         if (spinTime > 0) {
           spinTime -= 0.5;
-          speed -= 1;
+          if (speed >= 2) {
+            speed -= 1;
+          }
           controllSpinning();
         }
       });
@@ -74,6 +76,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   onPressed: () {
                     setState(() {
                       speed++;
+                      isSpinning = true;
                       controllSpinning();
                     });
                   },
@@ -87,6 +90,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     setState(() {
                       if (speed >= 2) {
                         speed--;
+                        isSpinning = true;
                         controllSpinning();
                       }
                     });
