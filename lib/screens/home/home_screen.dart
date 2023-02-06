@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:develop_world/widgets/home/spinning_dwd.dart';
 import 'package:develop_world/widgets/home/web_instancing_performance.dart';
 import 'package:flutter/material.dart';
 
@@ -61,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 height: 50,
               ),
               // WebGLDwd(fileName: 'dwd'),
-              SpinningDwd(),
+              // SpinningDwd(),
               SizedBox(
                 height: 50,
               ),

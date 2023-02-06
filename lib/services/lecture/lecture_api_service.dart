@@ -2,15 +2,18 @@ import 'dart:convert';
 
 import 'package:develop_world/model/lecture.dart';
 import 'package:develop_world/model/lecture_review.dart';
+import 'package:develop_world/model/page_object.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class LectureApiService {
   static final baseUrl = '${dotenv.env['SITE_URL']}/api/lecture';
-  static Future<List<Lecture>> searchLecture({
+  static Future<PageObject> searchLecture({
     String? title,
     Site? site,
     num? rate,
+    int page = 0,
+    int size = 12,
   }) async {
     List<Lecture> lectures = [];
     var url = '$baseUrl?';
@@ -24,14 +27,20 @@ class LectureApiService {
     if (rate != null) {
       url = '${url}rate=$rate&';
     }
+    url = '${url}page=$page&';
+    url = '${url}size=$size&';
     final response = await http.get(Uri.parse(url));
+    print(url);
     if (response.statusCode == 200) {
-      final List<dynamic> lecturesJson =
-          jsonDecode(utf8.decode(response.bodyBytes)); // korean broken
+      final pageJson = jsonDecode(utf8.decode(response.bodyBytes));
+      final PageObject page = PageObject.fromJson(pageJson);
+      final List<dynamic> lecturesJson = page.content;
+      // jsonDecode(utf8.decode(response.bodyBytes)); // korean broken
       for (var json in lecturesJson) {
         lectures.add(Lecture.fromJson(json));
       }
-      return lectures;
+      page.content = lectures;
+      return page;
     } else {
       throw Error();
     }
