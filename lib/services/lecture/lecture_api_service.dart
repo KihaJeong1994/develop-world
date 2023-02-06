@@ -30,7 +30,6 @@ class LectureApiService {
     url = '${url}page=$page&';
     url = '${url}size=$size&';
     final response = await http.get(Uri.parse(url));
-    print(url);
     if (response.statusCode == 200) {
       final pageJson = jsonDecode(utf8.decode(response.bodyBytes));
       final PageObject page = PageObject.fromJson(pageJson);
@@ -57,17 +56,25 @@ class LectureApiService {
     }
   }
 
-  static Future<List<LectureReview>> getReviewsById(String id) async {
+  static Future<PageObject> getReviewsById({
+    required String id,
+    int page = 0,
+    int size = 5,
+  }) async {
     List<LectureReview> reviews = [];
-    var url = '$baseUrl/$id/review';
+    var url = '$baseUrl/$id/review?';
+    url = '${url}page=$page&';
+    url = '${url}size=$size&';
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
-      final List<dynamic> jsonList =
-          jsonDecode(utf8.decode(response.bodyBytes));
+      final pageJson = jsonDecode(utf8.decode(response.bodyBytes));
+      final PageObject page = PageObject.fromJson(pageJson);
+      final List<dynamic> jsonList = page.content;
       for (var json in jsonList) {
         reviews.add(LectureReview.fromJson(json));
       }
-      return reviews;
+      page.content = reviews;
+      return page;
     } else {
       throw Error();
     }
