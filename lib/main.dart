@@ -4,6 +4,7 @@ import 'package:develop_world/routes/routes.dart';
 import 'package:develop_world/screens/screen_frame.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -11,6 +12,11 @@ Future<void> main() async {
   await dotenv.load(fileName: ".env");
   setPathUrlStrategy(); // remove '#'
   timeago.setLocaleMessages('kr', KrCustomMessages());
+  WidgetsFlutterBinding.ensureInitialized();
+  KakaoSdk.init(
+    nativeAppKey: '${dotenv.env['NATIVE_APP_KEY']}',
+    javaScriptAppKey: '${dotenv.env['JAVASCRIPT_APP_KEY']}',
+  );
   runApp(const MyApp());
 }
 

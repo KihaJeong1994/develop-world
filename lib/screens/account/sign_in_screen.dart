@@ -1,7 +1,34 @@
+import 'dart:html';
+
+import 'package:develop_world/config/event_bus.dart';
+import 'package:develop_world/config/sign_in_platform.dart';
+import 'package:develop_world/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk_talk.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
+
+  kakaoSignin() async {
+    try {
+      bool isInstalled = await isKakaoTalkInstalled();
+      OAuthToken token = isInstalled
+          ? await UserApi.instance.loginWithKakaoTalk()
+          : await UserApi.instance.loginWithKakaoAccount();
+      print('카카오계정으로 로그인 성공 ${token.accessToken}');
+      User user = await UserApi.instance.me();
+      print('사용자 정보 요청 성공'
+          '\n회원번호: ${user.id}'
+          '\n닉네임: ${user.kakaoAccount?.profile?.nickname}'
+          '\n이메일: ${user.kakaoAccount?.email}');
+      window.localStorage['id'] = user.kakaoAccount!.email!;
+      window.localStorage['signinPlatform'] = SigninPlatform.kakao.name;
+      SingleEventBus.singleEventBus.fire(SignInEvent());
+      navKey.currentState!.pushNamed(routeHome);
+    } catch (error) {
+      print('카카오톡으로 로그인 실패 $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +37,6 @@ class SignInScreen extends StatelessWidget {
       children: [
         Container(
           width: 500,
-          height: 500,
           decoration: BoxDecoration(
             border: Border.all(
               color: Colors.black.withOpacity(0.3),
@@ -88,14 +114,27 @@ class SignInScreen extends StatelessWidget {
                   height: 50,
                   width: 250,
                   decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(20)),
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   child: ElevatedButton(
                     onPressed: () {},
                     style: TextButton.styleFrom(backgroundColor: Colors.blue),
                     child: const Text(
                       'Login',
                       style: TextStyle(color: Colors.white, fontSize: 25),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => kakaoSignin(),
+                  child: SizedBox(
+                    height: 50,
+                    width: 250,
+                    child: Image.asset(
+                      'images/login/kakao_login_large_wide.png',
+                      height: 50,
+                      width: 250,
                     ),
                   ),
                 ),
@@ -107,3 +146,5 @@ class SignInScreen extends StatelessWidget {
     );
   }
 }
+
+class SignInEvent {}

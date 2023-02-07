@@ -21,8 +21,7 @@ class RouteGenerator {
     } else if (settings.name == routeSignIn) {
       return PageRouteBuilder(
         settings: settings,
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            const SignInScreen(),
+        pageBuilder: (context, animation, secondaryAnimation) => SignInScreen(),
         transitionDuration: Duration.zero,
         reverseTransitionDuration: Duration.zero,
       );
