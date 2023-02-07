@@ -4,9 +4,9 @@ import 'package:develop_world/services/lecture/lecture_api_service.dart';
 import 'package:develop_world/widgets/lecture/lecture_info.dart';
 import 'package:develop_world/widgets/lecture/lecture_picture.dart';
 import 'package:develop_world/widgets/lecture/lecture_review_form.dart';
-import 'package:develop_world/widgets/lecture/lecture_review_item.dart';
 import 'package:develop_world/widgets/lecture/lecture_review_list.dart';
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class LectureDetail extends StatefulWidget {
   final String id;
@@ -109,7 +109,6 @@ class LectureReviewPart extends StatefulWidget {
   }) : super(key: key);
 
   String lectureId;
-  List<LectureReview> reviews = [];
 
   @override
   State<LectureReviewPart> createState() => _LectureReviewPartState();
@@ -117,7 +116,13 @@ class LectureReviewPart extends StatefulWidget {
 
 class _LectureReviewPartState extends State<LectureReviewPart> {
   bool isWritingReview = false;
-  onSubmitPressed({required String review, required double rate}) {
+  final pagingController = PagingController<int, LectureReview>(
+    firstPageKey: 0,
+  );
+  onSubmitPressed({
+    required String review,
+    required double rate,
+  }) {
     setState(() {
       var reviewInstance = LectureReview(
         id: null,
@@ -129,8 +134,12 @@ class _LectureReviewPartState extends State<LectureReviewPart> {
         updatedAt: DateTime.now(),
       );
       LectureApiService.insertReview(reviewInstance);
+      final oldList = pagingController.itemList;
+      if (oldList != null) {
+        final newList = oldList..insert(0, reviewInstance);
+        pagingController.itemList = newList;
+      }
       isWritingReview = false;
-      widget.reviews.insert(0, reviewInstance);
     });
   }
 
@@ -163,9 +172,10 @@ class _LectureReviewPartState extends State<LectureReviewPart> {
         ),
         if (isWritingReview)
           LectureReviewForm(onSubmitPressed: onSubmitPressed),
-        for (var lectureReview in widget.reviews)
-          LectureReviewItem(lectureReview: lectureReview),
-        LectureReviewList(lectureId: widget.lectureId),
+        LectureReviewList(
+          lectureId: widget.lectureId,
+          pagingController: pagingController,
+        ),
       ],
     );
   }

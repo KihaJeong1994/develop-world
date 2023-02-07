@@ -8,22 +8,20 @@ class LectureReviewList extends StatefulWidget {
   LectureReviewList({
     Key? key,
     required this.lectureId,
+    required this.pagingController,
   }) : super(key: key);
 
   String lectureId;
+  PagingController<int, LectureReview> pagingController;
 
   @override
   State<LectureReviewList> createState() => _LectureReviewListState();
 }
 
 class _LectureReviewListState extends State<LectureReviewList> {
-  final _pagingController = PagingController<int, LectureReview>(
-    firstPageKey: 0,
-  );
-
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
+    widget.pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
     super.initState();
@@ -36,13 +34,13 @@ class _LectureReviewListState extends State<LectureReviewList> {
       final isLastPage = newPage.last;
       final newItems = newPage.content;
       if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
+        widget.pagingController.appendLastPage(newItems);
       } else {
         final nextPageKey = pageKey + 1;
-        _pagingController.appendPage(newItems, nextPageKey);
+        widget.pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
-      _pagingController.error = error;
+      widget.pagingController.error = error;
     }
   }
 
@@ -57,10 +55,10 @@ class _LectureReviewListState extends State<LectureReviewList> {
               return LectureReviewItem(lectureReview: lectureReview);
             },
           ),
-          pagingController: _pagingController,
+          pagingController: widget.pagingController,
         ),
         onRefresh: () => Future.sync(
-          () => _pagingController.refresh(),
+          () => widget.pagingController.refresh(),
         ),
       ),
     );
