@@ -100,12 +100,26 @@ class SignInScreen extends StatelessWidget {
                         hintText: 'Enter your secure password'),
                   ),
                 ),
-                TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    'Forgot Password',
-                    style: TextStyle(color: Colors.blue, fontSize: 15),
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        navKey.currentState!.pushNamed(routeSignUp);
+                      },
+                      child: const Text(
+                        '회원가입',
+                        style: TextStyle(color: Colors.blue, fontSize: 15),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        '비밀번호 찾기',
+                        style: TextStyle(color: Colors.blue, fontSize: 15),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: 20,
