@@ -196,6 +196,26 @@ class _LectureReviewPartState extends State<LectureReviewPart> {
             ElevatedButton(
               onPressed: (() {
                 setState(() {
+                  if (prefs.getString('token') == null && !isWritingReview) {
+                    showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('로그인을 해주세요'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'Cancel'),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () =>
+                                navKey.currentState!.pushNamed(routeSignIn),
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                    );
+                    return;
+                  }
                   isWritingReview = !isWritingReview;
                 });
               }),

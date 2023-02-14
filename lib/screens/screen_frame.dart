@@ -28,6 +28,7 @@ class _ScreenFrameState extends State<ScreenFrame> {
     prefs = await SharedPreferences.getInstance();
     id = prefs.getString('id');
     isSignIn = prefs.getString('token') != null;
+    setState(() {});
   }
 
   void logOut() {
