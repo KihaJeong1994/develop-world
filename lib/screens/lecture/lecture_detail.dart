@@ -1,5 +1,8 @@
-import 'package:develop_world/model/lecture.dart';
-import 'package:develop_world/model/lecture_review.dart';
+import 'dart:html';
+
+import 'package:develop_world/model/lecture/lecture.dart';
+import 'package:develop_world/model/lecture/lecture_review.dart';
+import 'package:develop_world/routes/routes.dart';
 import 'package:develop_world/services/lecture/lecture_api_service.dart';
 import 'package:develop_world/widgets/lecture/lecture_info.dart';
 import 'package:develop_world/widgets/lecture/lecture_picture.dart';
@@ -123,23 +126,41 @@ class _LectureReviewPartState extends State<LectureReviewPart> {
     required String review,
     required double rate,
   }) {
-    setState(() {
-      var reviewInstance = LectureReview(
-        id: null,
-        lectureId: widget.lectureId,
-        createdBy: "Spring master",
-        review: review,
-        rate: rate,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-      );
-      LectureApiService.insertReview(reviewInstance);
+    var reviewInstance = LectureReview(
+      id: null,
+      lectureId: widget.lectureId,
+      createdBy: window.localStorage['id'] ?? '익명',
+      review: review,
+      rate: rate,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+    LectureApiService.insertReview(reviewInstance).then((value) {
       final oldList = pagingController.itemList;
       if (oldList != null) {
         final newList = oldList..insert(0, reviewInstance);
         pagingController.itemList = newList;
       }
-      isWritingReview = false;
+      setState(() {
+        isWritingReview = false;
+      });
+    }).onError((error, stackTrace) {
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('로그인을 해주세요'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => navKey.currentState!.pushNamed(routeSignIn),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
     });
   }
 

@@ -24,6 +24,7 @@ class _ScreenFrameState extends State<ScreenFrame> {
 
   void logOut() {
     window.localStorage.remove('id');
+    window.localStorage.remove('token');
 
     setState(() {
       isSignIn = false;

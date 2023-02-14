@@ -1,4 +1,4 @@
-import 'package:develop_world/model/lecture.dart';
+import 'package:develop_world/model/lecture/lecture.dart';
 import 'package:develop_world/widgets/common/five_star_rate.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';

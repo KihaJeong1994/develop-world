@@ -1,4 +1,4 @@
-import 'package:develop_world/model/lecture_review.dart';
+import 'package:develop_world/model/lecture/lecture_review.dart';
 import 'package:develop_world/widgets/common/five_star_rate.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;

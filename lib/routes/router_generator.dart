@@ -29,8 +29,7 @@ class RouteGenerator {
     } else if (settings.name == routeSignUp) {
       return PageRouteBuilder(
         settings: settings,
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            const SignUpScreen(),
+        pageBuilder: (context, animation, secondaryAnimation) => SignUpScreen(),
         transitionDuration: Duration.zero,
         reverseTransitionDuration: Duration.zero,
       );

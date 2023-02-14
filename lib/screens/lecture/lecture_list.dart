@@ -1,10 +1,9 @@
+import 'package:develop_world/model/lecture/lecture.dart';
 import 'package:develop_world/services/lecture/lecture_api_service.dart';
 import 'package:develop_world/widgets/lecture/lecture_item.dart';
 import 'package:develop_world/widgets/lecture/lecture_search.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-
-import '../../model/lecture.dart';
 
 class LectureList extends StatefulWidget {
   const LectureList({

@@ -2,12 +2,16 @@ import 'dart:html';
 
 import 'package:develop_world/config/event_bus.dart';
 import 'package:develop_world/config/sign_in_platform.dart';
+import 'package:develop_world/model/auth/sign_in_info.dart';
 import 'package:develop_world/routes/routes.dart';
+import 'package:develop_world/services/auth/auth_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_talk.dart';
 
 class SignInScreen extends StatelessWidget {
-  const SignInScreen({super.key});
+  SignInScreen({super.key});
+  final idController = TextEditingController();
+  final passwordController = TextEditingController();
 
   kakaoSignin() async {
     try {
@@ -81,20 +85,22 @@ class SignInScreen extends StatelessWidget {
                     fontSize: 25,
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.all(10),
+                Padding(
+                  padding: const EdgeInsets.all(10),
                   child: TextField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'User Name',
-                        hintText: 'Enter valid mail id as abc@gmail.com'),
+                    controller: idController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'id',
+                    ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.all(10),
+                Padding(
+                  padding: const EdgeInsets.all(10),
                   child: TextField(
+                    controller: passwordController,
                     obscureText: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Password',
                         hintText: 'Enter your secure password'),
@@ -132,7 +138,30 @@ class SignInScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      AuthApiService.signIn(SignInInfo(
+                        userId: idController.text,
+                        password: passwordController.text,
+                      )).then((authResponse) {
+                        window.localStorage['id'] = authResponse.userId;
+                        window.localStorage['token'] = authResponse.token;
+                        SingleEventBus.singleEventBus.fire(SignInEvent());
+                        navKey.currentState!.pushNamed(routeHome);
+                      }).onError((error, stackTrace) {
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('로그인 정보가 틀렸습니다!'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, 'OK'),
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      });
+                    },
                     style: TextButton.styleFrom(backgroundColor: Colors.blue),
                     child: const Text(
                       'Login',
@@ -140,18 +169,18 @@ class SignInScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () => kakaoSignin(),
-                  child: SizedBox(
-                    height: 50,
-                    width: 250,
-                    child: Image.asset(
-                      'images/login/kakao_login_large_wide.png',
-                      height: 50,
-                      width: 250,
-                    ),
-                  ),
-                ),
+                // GestureDetector(
+                //   onTap: () => kakaoSignin(),
+                //   child: SizedBox(
+                //     height: 50,
+                //     width: 250,
+                //     child: Image.asset(
+                //       'images/login/kakao_login_large_wide.png',
+                //       height: 50,
+                //       width: 250,
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),

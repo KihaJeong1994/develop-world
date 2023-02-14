@@ -1,6 +1,5 @@
+import 'package:develop_world/model/lecture/lecture.dart';
 import 'package:flutter/material.dart';
-
-import '../../model/lecture.dart';
 
 class LectureSearch extends StatefulWidget {
   Function({String? titleSearch, Site? selectedSite, num? selectedRate})

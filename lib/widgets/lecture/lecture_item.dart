@@ -1,9 +1,8 @@
+import 'package:develop_world/model/lecture/lecture.dart';
 import 'package:develop_world/routes/routes.dart';
 import 'package:develop_world/widgets/common/five_star_rate.dart';
 import 'package:flutter/material.dart';
 import 'package:image_card/image_card.dart';
-
-import '../../model/lecture.dart';
 
 const maxRate = 5;
 

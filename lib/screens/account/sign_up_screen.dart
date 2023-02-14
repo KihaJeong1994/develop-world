@@ -1,8 +1,13 @@
+import 'package:develop_world/model/user.dart';
 import 'package:develop_world/routes/routes.dart';
+import 'package:develop_world/services/auth/auth_api_service.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatelessWidget {
-  const SignUpScreen({super.key});
+  SignUpScreen({super.key});
+  final idController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,32 +35,36 @@ class SignUpScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const SizedBox(
+                  SizedBox(
                     width: 400,
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: idController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'id',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: 400,
+                    child: TextField(
+                      controller: emailController,
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'email',
                       ),
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const SizedBox(
+                  SizedBox(
                     width: 400,
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: passwordController,
+                      obscureText: true,
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'password',
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  const SizedBox(
-                    width: 400,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'nickname',
                       ),
                     ),
                   ),
@@ -71,7 +80,40 @@ class SignUpScreen extends StatelessWidget {
                       ),
                       child: ElevatedButton(
                         onPressed: () {
-                          navKey.currentState!.pushNamed(routeHome);
+                          AuthApiService.register(User(
+                            userId: idController.text,
+                            email: emailController.text,
+                            password: passwordController.text,
+                          )).then((value) {
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const Text('회원가입에 성공하였습니다!'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () => navKey.currentState!
+                                        .pushNamed(routeHome),
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                            navKey.currentState!.pushNamed(routeHome);
+                          }).onError((error, stackTrace) {
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const Text('정보를 정확히 입력해주세요!'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'OK'),
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
                         },
                         style:
                             TextButton.styleFrom(backgroundColor: Colors.blue),

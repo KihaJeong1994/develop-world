@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:html';
+import 'dart:io';
 
-import 'package:develop_world/model/lecture.dart';
-import 'package:develop_world/model/lecture_review.dart';
+import 'package:develop_world/model/lecture/lecture.dart';
+import 'package:develop_world/model/lecture/lecture_review.dart';
 import 'package:develop_world/model/page_object.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -65,6 +67,7 @@ class LectureApiService {
     var url = '$baseUrl/$id/review?';
     url = '${url}page=$page&';
     url = '${url}size=$size&';
+    url = '${url}sort=updatedAt,desc&';
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       final pageJson = jsonDecode(utf8.decode(response.bodyBytes));
@@ -82,9 +85,14 @@ class LectureApiService {
 
   static Future<LectureReview> insertReview(LectureReview lectureReview) async {
     var url = '$baseUrl/${lectureReview.lectureId}/review';
+    var header = {HttpHeaders.contentTypeHeader: "application/json"};
+    var token = window.localStorage['token'];
+    if (token != null) {
+      header.addAll({HttpHeaders.authorizationHeader: 'Bearer $token'});
+    }
     final response = await http.post(
       Uri.parse(url),
-      headers: {"content-type": "application/json"},
+      headers: header,
       body: jsonEncode(lectureReview
           .toJson()), // jsonEncode(lectureReview) fails because cannot turn to json directly
     );

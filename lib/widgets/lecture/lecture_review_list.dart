@@ -1,4 +1,4 @@
-import 'package:develop_world/model/lecture_review.dart';
+import 'package:develop_world/model/lecture/lecture_review.dart';
 import 'package:develop_world/services/lecture/lecture_api_service.dart';
 import 'package:develop_world/widgets/lecture/lecture_review_item.dart';
 import 'package:flutter/material.dart';
