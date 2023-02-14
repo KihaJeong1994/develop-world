@@ -43,6 +43,7 @@ class LectureReviewForm extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 RatingBar.builder(
+                  itemSize: 25,
                   initialRating: 5,
                   minRating: 1,
                   direction: Axis.horizontal,
