@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:develop_world/model/lecture/lecture.dart';
 import 'package:develop_world/model/lecture/lecture_review.dart';
 import 'package:develop_world/routes/routes.dart';
@@ -10,6 +8,7 @@ import 'package:develop_world/widgets/lecture/lecture_review_form.dart';
 import 'package:develop_world/widgets/lecture/lecture_review_list.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LectureDetail extends StatefulWidget {
   final String id;
@@ -122,6 +121,12 @@ class _LectureReviewPartState extends State<LectureReviewPart> {
   final pagingController = PagingController<int, LectureReview>(
     firstPageKey: 0,
   );
+  late SharedPreferences prefs;
+
+  Future initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
   onSubmitPressed({
     required String review,
     required double rate,
@@ -129,7 +134,8 @@ class _LectureReviewPartState extends State<LectureReviewPart> {
     var reviewInstance = LectureReview(
       id: null,
       lectureId: widget.lectureId,
-      createdBy: window.localStorage['id'] ?? '익명',
+      // createdBy: window.localStorage['id'] ?? '익명',
+      createdBy: prefs.getString('id') ?? '익명',
       review: review,
       rate: rate,
       createdAt: DateTime.now(),
@@ -162,6 +168,12 @@ class _LectureReviewPartState extends State<LectureReviewPart> {
         ),
       );
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initPrefs();
   }
 
   @override

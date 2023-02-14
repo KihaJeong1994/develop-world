@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
 import 'dart:io';
 
 import 'package:develop_world/model/lecture/lecture.dart';
@@ -7,6 +6,7 @@ import 'package:develop_world/model/lecture/lecture_review.dart';
 import 'package:develop_world/model/page_object.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LectureApiService {
   static final baseUrl = '${dotenv.env['SITE_URL']}/api/lecture';
@@ -84,9 +84,11 @@ class LectureApiService {
   }
 
   static Future<LectureReview> insertReview(LectureReview lectureReview) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     var url = '$baseUrl/${lectureReview.lectureId}/review';
     var header = {HttpHeaders.contentTypeHeader: "application/json"};
-    var token = window.localStorage['token'];
+    // var token = window.localStorage['token'];
+    var token = prefs.getString('token');
     if (token != null) {
       header.addAll({HttpHeaders.authorizationHeader: 'Bearer $token'});
     }

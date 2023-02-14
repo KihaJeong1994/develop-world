@@ -1,11 +1,10 @@
-import 'dart:html';
-
 import 'package:develop_world/config/event_bus.dart';
 import 'package:develop_world/routes/routes.dart';
 import 'package:develop_world/screens/account/sign_in_screen.dart';
 import 'package:develop_world/widgets/common/navigation_bar_web.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ScreenFrame extends StatefulWidget {
   final Widget child;
@@ -19,23 +18,34 @@ class ScreenFrame extends StatefulWidget {
 }
 
 class _ScreenFrameState extends State<ScreenFrame> {
-  String? id = window.localStorage['id'];
-  bool isSignIn = window.localStorage['id'] != null;
+  // String? id = window.localStorage['id'];
+  // bool isSignIn = window.localStorage['id'] != null;
+  String? id;
+  bool isSignIn = false;
+  late SharedPreferences prefs;
+
+  Future initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    id = prefs.getString('id');
+    isSignIn = prefs.getString('token') != null;
+  }
 
   void logOut() {
-    window.localStorage.remove('id');
-    window.localStorage.remove('token');
+    // window.localStorage.remove('id');
+    // window.localStorage.remove('token');
+    prefs.remove('id');
+    prefs.remove('token');
 
     setState(() {
       isSignIn = false;
       id = null;
     });
-    switch (window.localStorage['signinPlatform']) {
-      case 'kakao':
-        kakaoLogOut();
-        break;
-      default:
-    }
+    // switch (window.localStorage['signinPlatform']) {
+    //   case 'kakao':
+    //     kakaoLogOut();
+    //     break;
+    //   default:
+    // }
   }
 
   void kakaoLogOut() async {
@@ -53,9 +63,11 @@ class _ScreenFrameState extends State<ScreenFrame> {
     SingleEventBus.singleEventBus.on<SignInEvent>().listen((event) {
       setState(() {
         isSignIn = true;
-        id = window.localStorage['id'];
+        // id = window.localStorage['id'];
+        id = prefs.getString('id');
       });
     });
+    initPrefs();
   }
 
   @override

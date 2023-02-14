@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:develop_world/config/event_bus.dart';
 import 'package:develop_world/config/sign_in_platform.dart';
 import 'package:develop_world/model/auth/sign_in_info.dart';
@@ -7,11 +5,25 @@ import 'package:develop_world/routes/routes.dart';
 import 'package:develop_world/services/auth/auth_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_talk.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class SignInScreen extends StatelessWidget {
-  SignInScreen({super.key});
+class SignInScreen extends StatefulWidget {
+  const SignInScreen({super.key});
+
+  @override
+  State<SignInScreen> createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends State<SignInScreen> {
   final idController = TextEditingController();
+
   final passwordController = TextEditingController();
+
+  late SharedPreferences prefs;
+
+  Future initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+  }
 
   kakaoSignin() async {
     try {
@@ -25,13 +37,21 @@ class SignInScreen extends StatelessWidget {
           '\n회원번호: ${user.id}'
           '\n닉네임: ${user.kakaoAccount?.profile?.nickname}'
           '\n이메일: ${user.kakaoAccount?.email}');
-      window.localStorage['id'] = user.kakaoAccount!.email!;
-      window.localStorage['signinPlatform'] = SigninPlatform.kakao.name;
+      prefs.setString('id', user.kakaoAccount!.email!);
+      prefs.setString('signinPlatform', SigninPlatform.kakao.name);
+      // window.localStorage['id'] = user.kakaoAccount!.email!;
+      // window.localStorage['signinPlatform'] = SigninPlatform.kakao.name;
       SingleEventBus.singleEventBus.fire(SignInEvent());
       navKey.currentState!.pushNamed(routeHome);
     } catch (error) {
       print('카카오톡으로 로그인 실패 $error');
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initPrefs();
   }
 
   @override
@@ -143,8 +163,10 @@ class SignInScreen extends StatelessWidget {
                         userId: idController.text,
                         password: passwordController.text,
                       )).then((authResponse) {
-                        window.localStorage['id'] = authResponse.userId;
-                        window.localStorage['token'] = authResponse.token;
+                        prefs.setString('id', authResponse.userId);
+                        prefs.setString('token', authResponse.token);
+                        // window.localStorage['id'] = authResponse.userId;
+                        // window.localStorage['token'] = authResponse.token;
                         SingleEventBus.singleEventBus.fire(SignInEvent());
                         navKey.currentState!.pushNamed(routeHome);
                       }).onError((error, stackTrace) {
