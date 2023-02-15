@@ -68,6 +68,11 @@ class _ScreenFrameState extends State<ScreenFrame> {
         id = prefs.getString('id');
       });
     });
+    SingleEventBus.singleEventBus.on<SignOutEvent>().listen((event) {
+      setState(() {
+        logOut();
+      });
+    });
     initPrefs();
   }
 
@@ -125,3 +130,5 @@ class _ScreenFrameState extends State<ScreenFrame> {
         ));
   }
 }
+
+class SignOutEvent {}

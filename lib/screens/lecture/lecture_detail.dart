@@ -1,6 +1,8 @@
+import 'package:develop_world/config/event_bus.dart';
 import 'package:develop_world/model/lecture/lecture.dart';
 import 'package:develop_world/model/lecture/lecture_review.dart';
 import 'package:develop_world/routes/routes.dart';
+import 'package:develop_world/screens/screen_frame.dart';
 import 'package:develop_world/services/lecture/lecture_api_service.dart';
 import 'package:develop_world/widgets/lecture/lecture_info.dart';
 import 'package:develop_world/widgets/lecture/lecture_picture.dart';
@@ -150,7 +152,9 @@ class _LectureReviewPartState extends State<LectureReviewPart> {
       setState(() {
         isWritingReview = false;
       });
+      Navigator.pop(context);
     }).onError((error, stackTrace) {
+      SingleEventBus.singleEventBus.fire(SignOutEvent());
       showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -217,14 +221,17 @@ class _LectureReviewPartState extends State<LectureReviewPart> {
                     return;
                   }
                   isWritingReview = !isWritingReview;
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) =>
+                        LectureReviewForm(onSubmitPressed: onSubmitPressed),
+                  );
                 });
               }),
-              child: Text(!isWritingReview ? '쓰기' : '취소'),
+              child: const Text('쓰기'),
             )
           ],
         ),
-        if (isWritingReview)
-          LectureReviewForm(onSubmitPressed: onSubmitPressed),
         LectureReviewList(
           lectureId: widget.lectureId,
           pagingController: pagingController,
