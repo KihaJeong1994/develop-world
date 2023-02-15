@@ -35,7 +35,17 @@ class LectureInfo extends StatelessWidget {
             onPressed: _launchUrl,
             child: Text(lecture.site.name),
           ),
-          FiveStarRate(rate: lecture.rate),
+          Row(
+            children: [
+              FiveStarRate(rate: lecture.rate),
+              Text(
+                ' (${lecture.reviewsCnt}명)',
+                style: TextStyle(
+                  color: Colors.black.withOpacity(0.5),
+                ),
+              )
+            ],
+          ),
           Text(
             lecture.description,
           ),

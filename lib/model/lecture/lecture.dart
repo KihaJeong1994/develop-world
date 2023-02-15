@@ -2,6 +2,7 @@ class Lecture {
   String id, title, image, url, description;
   Site site;
   double rate;
+  int reviewsCnt;
   DateTime createdAt, updatedAt;
 
   Lecture({
@@ -10,6 +11,7 @@ class Lecture {
     required this.site,
     required this.image,
     required this.rate,
+    required this.reviewsCnt,
     required this.createdAt,
     required this.updatedAt,
     required this.url,
@@ -22,6 +24,7 @@ class Lecture {
         site = Site.values.byName(json['site']),
         image = json['image'],
         rate = json['rate'],
+        reviewsCnt = json['reviewsCnt'],
         url = json['url'],
         description = json['description'],
         createdAt = DateTime.parse(json['createdAt']),

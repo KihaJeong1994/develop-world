@@ -89,7 +89,23 @@ class _LectureItemState extends State<LectureItem> {
                           color: Colors.grey,
                         ),
                       ),
-                      FiveStarRate(rate: lecture.rate),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          FiveStarRate(
+                            rate: lecture.rate,
+                            starSize: MediaQuery.of(context).size.width >= 800
+                                ? null
+                                : 18,
+                          ),
+                          Text(
+                            ' (${lecture.reviewsCnt}명)',
+                            style: TextStyle(
+                              color: Colors.black.withOpacity(0.5),
+                            ),
+                          )
+                        ],
+                      ),
                     ],
                   ),
                 ),

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class FiveStarRate extends StatelessWidget {
-  const FiveStarRate({
+  FiveStarRate({
     Key? key,
     required this.rate,
+    this.starSize,
   }) : super(key: key);
 
   final double rate;
+  final double? starSize;
 
   @override
   Widget build(BuildContext context) {
@@ -15,19 +17,22 @@ class FiveStarRate extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         for (int i = 0; i < rate.floor(); i++)
-          const Icon(
+          Icon(
             Icons.star,
             color: Colors.amber,
+            size: starSize,
           ),
         if (rate - rate.floor() > 0)
-          const Icon(
+          Icon(
             Icons.star_half,
             color: Colors.amber,
+            size: starSize,
           ),
         for (int i = 0; i <= 5 - rate - 1; i++)
-          const Icon(
+          Icon(
             Icons.star_border,
             color: Colors.amber,
+            size: starSize,
           ),
         Text(
           '$rate',

@@ -31,6 +31,7 @@ class LectureApiService {
     }
     url = '${url}page=$page&';
     url = '${url}size=$size&';
+    url = '${url}sort=reviewsCnt,desc&';
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       final pageJson = jsonDecode(utf8.decode(response.bodyBytes));
