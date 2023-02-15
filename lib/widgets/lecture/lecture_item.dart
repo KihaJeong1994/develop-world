@@ -2,6 +2,7 @@ import 'package:develop_world/model/lecture/lecture.dart';
 import 'package:develop_world/routes/routes.dart';
 import 'package:develop_world/widgets/common/five_star_rate.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_card/image_card.dart';
 
 const maxRate = 5;
@@ -20,6 +21,12 @@ class LectureItem extends StatefulWidget {
 
 class _LectureItemState extends State<LectureItem> {
   bool _hover = false;
+  late final imageUrl;
+  @override
+  void initState() {
+    super.initState();
+    imageUrl = '${dotenv.env['IMAGE_URL']}/lectures';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +55,10 @@ class _LectureItemState extends State<LectureItem> {
               children: [
                 FillImageCard(
                   // width: 320,
-                  // heightImage: 160,
-                  imageProvider: AssetImage(
-                    'images/lectures/${lecture.image}',
+                  heightImage:
+                      MediaQuery.of(context).size.width >= 800 ? 160 : 80,
+                  imageProvider: NetworkImage(
+                    '$imageUrl/${lecture.image}',
                   ),
                   // tags: [_tag('Category', () {}), _tag('Product', () {})],
                   title: RichText(
