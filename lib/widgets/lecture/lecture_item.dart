@@ -54,7 +54,7 @@ class _LectureItemState extends State<LectureItem> {
             child: Column(
               children: [
                 FillImageCard(
-                  // width: 320,
+                  width: double.infinity, // make child follow parent width
                   heightImage:
                       MediaQuery.of(context).size.width >= 800 ? 160 : 80,
                   imageProvider: NetworkImage(
