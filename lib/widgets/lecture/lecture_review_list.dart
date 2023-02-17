@@ -9,10 +9,13 @@ class LectureReviewList extends StatefulWidget {
     Key? key,
     required this.lectureId,
     required this.pagingController,
+    required this.onDeletePressed,
   }) : super(key: key);
 
   String lectureId;
   PagingController<int, LectureReview> pagingController;
+  Function({required String lectureId, required String id, required int index})
+      onDeletePressed;
 
   @override
   State<LectureReviewList> createState() => _LectureReviewListState();
@@ -52,7 +55,11 @@ class _LectureReviewListState extends State<LectureReviewList> {
         child: PagedListView(
           builderDelegate: PagedChildBuilderDelegate<LectureReview>(
             itemBuilder: (context, lectureReview, index) {
-              return LectureReviewItem(lectureReview: lectureReview);
+              return LectureReviewItem(
+                lectureReview: lectureReview,
+                index: index,
+                onDeletePressed: widget.onDeletePressed,
+              );
             },
           ),
           pagingController: widget.pagingController,

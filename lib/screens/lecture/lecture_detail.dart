@@ -48,7 +48,7 @@ class _LectureDetailState extends State<LectureDetail> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 50,
+              horizontal: 30,
             ),
             child: Column(
               children: [
@@ -146,7 +146,7 @@ class _LectureReviewPartState extends State<LectureReviewPart> {
     LectureApiService.insertReview(reviewInstance).then((value) {
       final oldList = pagingController.itemList;
       if (oldList != null) {
-        final newList = oldList..insert(0, reviewInstance);
+        final newList = oldList..insert(0, value);
         pagingController.itemList = newList;
       }
       setState(() {
@@ -155,23 +155,44 @@ class _LectureReviewPartState extends State<LectureReviewPart> {
       Navigator.pop(context);
     }).onError((error, stackTrace) {
       SingleEventBus.singleEventBus.fire(SignOutEvent());
-      showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: const Text('로그인을 해주세요'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'Cancel'),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () => navKey.currentState!.pushNamed(routeSignIn),
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
+      askToLogin();
     });
+  }
+
+  onDeletePressed({
+    required String lectureId,
+    required String id,
+    required int index,
+  }) {
+    LectureApiService.deleteReview(lectureId, id).then((value) {
+      final oldList = pagingController.itemList;
+      oldList!.removeAt(index);
+      final newList = oldList;
+      pagingController.itemList = newList;
+      setState(() {});
+    }).onError((error, stackTrace) {
+      SingleEventBus.singleEventBus.fire(SignOutEvent());
+      askToLogin();
+    });
+  }
+
+  Future<String?> askToLogin() {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('로그인을 해주세요'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => navKey.currentState!.pushNamed(routeSignIn),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -235,6 +256,7 @@ class _LectureReviewPartState extends State<LectureReviewPart> {
         LectureReviewList(
           lectureId: widget.lectureId,
           pagingController: pagingController,
+          onDeletePressed: onDeletePressed,
         ),
       ],
     );

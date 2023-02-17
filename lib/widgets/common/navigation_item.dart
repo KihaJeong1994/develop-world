@@ -20,7 +20,7 @@ class NavigationItem extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: MouseRegion(
-          onHover: (event) {}, // TODO: add hover effect
+          cursor: SystemMouseCursors.click,
           child: MediaQuery.of(context).size.width >= 600
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.start,

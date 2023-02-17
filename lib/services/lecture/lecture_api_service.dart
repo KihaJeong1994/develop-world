@@ -105,4 +105,44 @@ class LectureApiService {
     }
     throw Error();
   }
+
+  static Future<LectureReview> updateReview(LectureReview lectureReview) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var url = '$baseUrl/${lectureReview.lectureId}/review';
+    var header = {HttpHeaders.contentTypeHeader: "application/json"};
+    var token = prefs.getString('token');
+    if (token != null) {
+      header.addAll({HttpHeaders.authorizationHeader: 'Bearer $token'});
+    }
+    final response = await http.put(
+      Uri.parse(url),
+      headers: header,
+      body: jsonEncode(lectureReview
+          .toJson()), // jsonEncode(lectureReview) fails because cannot turn to json directly
+    );
+    if (response.statusCode == 200) {
+      var json = jsonDecode(utf8.decode(response.bodyBytes));
+      return LectureReview.fromJson(json);
+    }
+    throw Error();
+  }
+
+  static Future<void> deleteReview(String lectureId, String id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var url = '$baseUrl/$lectureId/review?';
+    url = '${url}id=$id&';
+    Map<String, String> header = {};
+    var token = prefs.getString('token');
+    if (token != null) {
+      header.addAll({HttpHeaders.authorizationHeader: 'Bearer $token'});
+    }
+    final response = await http.delete(
+      Uri.parse(url),
+      headers: header,
+    );
+    if (response.statusCode == 200) {
+      return;
+    }
+    throw Error();
+  }
 }
