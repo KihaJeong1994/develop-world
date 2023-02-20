@@ -1,12 +1,20 @@
+import 'package:develop_world/model/lecture/lecture_review.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LectureReviewForm extends StatefulWidget {
-  Function({required String review, required double rate}) onSubmitPressed;
+  Function({required String review, required double rate})? onSubmitPressed;
+  Function({required LectureReview lectureReview, required int index})?
+      onUpdatePressed;
+  int? index;
+  LectureReview? lectureReview;
   LectureReviewForm({
     Key? key,
-    required this.onSubmitPressed,
+    this.onSubmitPressed,
+    this.onUpdatePressed,
+    this.index,
+    this.lectureReview,
   }) : super(key: key);
 
   @override
@@ -34,6 +42,11 @@ class _LectureReviewFormState extends State<LectureReviewForm> {
     final lectureReviewController = TextEditingController();
     String review = '';
     double rate = 5;
+    if (widget.lectureReview != null) {
+      lectureReviewController.text = widget.lectureReview!.review;
+      review = widget.lectureReview!.review;
+      rate = widget.lectureReview!.rate;
+    }
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).secondaryHeaderColor,
@@ -65,7 +78,7 @@ class _LectureReviewFormState extends State<LectureReviewForm> {
               children: [
                 RatingBar.builder(
                   itemSize: 25,
-                  initialRating: 5,
+                  initialRating: rate,
                   minRating: 1,
                   direction: Axis.horizontal,
                   allowHalfRating: true,
@@ -80,10 +93,21 @@ class _LectureReviewFormState extends State<LectureReviewForm> {
                   },
                 ),
                 ElevatedButton(
-                  onPressed: () => widget.onSubmitPressed(
-                    review: review,
-                    rate: rate,
-                  ),
+                  onPressed: () {
+                    if (widget.onSubmitPressed != null) {
+                      widget.onSubmitPressed!(
+                        review: review,
+                        rate: rate,
+                      );
+                    } else if (widget.onUpdatePressed != null) {
+                      widget.lectureReview!.review = review;
+                      widget.lectureReview!.rate = rate;
+                      widget.onUpdatePressed!(
+                        lectureReview: widget.lectureReview!,
+                        index: widget.index!,
+                      );
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                       backgroundColor:
                           Theme.of(context).primaryColor.withOpacity(0.8)),

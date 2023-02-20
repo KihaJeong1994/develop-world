@@ -10,12 +10,15 @@ class LectureReviewList extends StatefulWidget {
     required this.lectureId,
     required this.pagingController,
     required this.onDeletePressed,
+    required this.onUpdatePressed,
   }) : super(key: key);
 
   String lectureId;
   PagingController<int, LectureReview> pagingController;
   Function({required String lectureId, required String id, required int index})
       onDeletePressed;
+  Function({required LectureReview lectureReview, required int index})
+      onUpdatePressed;
 
   @override
   State<LectureReviewList> createState() => _LectureReviewListState();
@@ -59,6 +62,7 @@ class _LectureReviewListState extends State<LectureReviewList> {
                 lectureReview: lectureReview,
                 index: index,
                 onDeletePressed: widget.onDeletePressed,
+                onUpdatePressed: widget.onUpdatePressed,
               );
             },
           ),

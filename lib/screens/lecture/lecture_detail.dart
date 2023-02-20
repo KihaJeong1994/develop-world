@@ -159,6 +159,27 @@ class _LectureReviewPartState extends State<LectureReviewPart> {
     });
   }
 
+  onUpdatePressed({
+    required LectureReview lectureReview,
+    required int index,
+  }) {
+    LectureApiService.updateReview(lectureReview).then((value) {
+      final oldList = pagingController.itemList;
+      if (oldList != null) {
+        oldList.removeAt(index);
+        final newList = oldList..insert(0, value);
+        pagingController.itemList = newList;
+      }
+      setState(() {
+        isWritingReview = false;
+      });
+      Navigator.pop(context);
+    }).onError((error, stackTrace) {
+      SingleEventBus.singleEventBus.fire(SignOutEvent());
+      askToLogin();
+    });
+  }
+
   onDeletePressed({
     required String lectureId,
     required String id,
@@ -257,6 +278,7 @@ class _LectureReviewPartState extends State<LectureReviewPart> {
           lectureId: widget.lectureId,
           pagingController: pagingController,
           onDeletePressed: onDeletePressed,
+          onUpdatePressed: onUpdatePressed,
         ),
       ],
     );

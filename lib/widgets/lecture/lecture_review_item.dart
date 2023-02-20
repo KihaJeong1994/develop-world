@@ -1,5 +1,7 @@
 import 'package:develop_world/model/lecture/lecture_review.dart';
+import 'package:develop_world/routes/routes.dart';
 import 'package:develop_world/widgets/common/five_star_rate.dart';
+import 'package:develop_world/widgets/lecture/lecture_review_form.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -10,12 +12,15 @@ class LectureReviewItem extends StatefulWidget {
     required this.lectureReview,
     required this.index,
     required this.onDeletePressed,
+    required this.onUpdatePressed,
   }) : super(key: key);
 
   final LectureReview lectureReview;
   final int index;
   Function({required String lectureId, required String id, required int index})
       onDeletePressed;
+  Function({required LectureReview lectureReview, required int index})
+      onUpdatePressed;
 
   @override
   State<LectureReviewItem> createState() => _LectureReviewItemState();
@@ -89,7 +94,40 @@ class _LectureReviewItemState extends State<LectureReviewItem> {
                         MouseRegion(
                           cursor: SystemMouseCursors.click,
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              setState(() {
+                                if (prefs.getString('token') == null) {
+                                  showDialog<String>(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        AlertDialog(
+                                      title: const Text('로그인을 해주세요'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, 'Cancel'),
+                                          child: const Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () => navKey.currentState!
+                                              .pushNamed(routeSignIn),
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                  return;
+                                }
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) => LectureReviewForm(
+                                    onUpdatePressed: widget.onUpdatePressed,
+                                    index: widget.index,
+                                    lectureReview: widget.lectureReview,
+                                  ),
+                                );
+                              });
+                            },
                             child: Icon(
                               Icons.edit,
                               color: Colors.black.withOpacity(0.3),
