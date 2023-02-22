@@ -1,6 +1,9 @@
 import 'package:develop_world/routes/routes.dart';
 import 'package:develop_world/screens/account/sign_in_screen.dart';
 import 'package:develop_world/screens/account/sign_up_screen.dart';
+import 'package:develop_world/screens/contacts/contact_detail.dart';
+import 'package:develop_world/screens/contacts/contact_write.dart';
+import 'package:develop_world/screens/contacts/contacts_list.dart';
 import 'package:develop_world/screens/home/home_screen.dart';
 import 'package:develop_world/screens/lecture/lecture_detail.dart';
 import 'package:develop_world/screens/lecture/lecture_list.dart';
@@ -21,7 +24,8 @@ class RouteGenerator {
     } else if (settings.name == routeSignIn) {
       return PageRouteBuilder(
         settings: settings,
-        pageBuilder: (context, animation, secondaryAnimation) => SignInScreen(),
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const SignInScreen(),
         transitionDuration: Duration.zero,
         reverseTransitionDuration: Duration.zero,
       );
@@ -47,7 +51,15 @@ class RouteGenerator {
       return PageRouteBuilder(
         settings: settings,
         pageBuilder: (context, animation, secondaryAnimation) =>
-            const Placeholder(),
+            const ContactsList(),
+        transitionDuration: Duration.zero,
+        reverseTransitionDuration: Duration.zero,
+      );
+      // lecture detail
+    } else if (settings.name == routeWriteContact) {
+      return PageRouteBuilder(
+        settings: settings,
+        pageBuilder: (context, animation, secondaryAnimation) => ContactWrite(),
         transitionDuration: Duration.zero,
         reverseTransitionDuration: Duration.zero,
       );
@@ -58,6 +70,16 @@ class RouteGenerator {
         settings: settings,
         pageBuilder: (context, animation, secondaryAnimation) =>
             LectureDetail(id: id),
+        transitionDuration: Duration.zero,
+        reverseTransitionDuration: Duration.zero,
+      );
+      // contactDetail
+    } else if (isContactDetail(settings.name)) {
+      var id = settings.name!.split('/').last;
+      return PageRouteBuilder(
+        settings: settings,
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            ContactDetail(id: id),
         transitionDuration: Duration.zero,
         reverseTransitionDuration: Duration.zero,
       );
@@ -77,5 +99,11 @@ class RouteGenerator {
     return name != null &&
         name.split('/').length == 3 &&
         name.split('/')[1] == 'lecture';
+  }
+
+  static bool isContactDetail(String? name) {
+    return name != null &&
+        name.split('/').length == 3 &&
+        name.split('/')[1] == 'contact';
   }
 }
