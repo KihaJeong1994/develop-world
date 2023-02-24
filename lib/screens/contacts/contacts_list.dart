@@ -1,6 +1,6 @@
-import 'package:develop_world/model/contacts/contact.dart';
 import 'package:develop_world/model/page_object.dart';
 import 'package:develop_world/routes/routes.dart';
+import 'package:develop_world/services/contact/contact_api_service.dart';
 import 'package:develop_world/widgets/contacts/contact_item.dart';
 import 'package:flutter/material.dart';
 
@@ -12,104 +12,22 @@ class ContactsList extends StatefulWidget {
 }
 
 class _ContactsListState extends State<ContactsList> {
+  late Future<PageObject> pageContactFuture;
+  final titleController = TextEditingController();
+  String? title;
+  String? description;
+  String? createdBy;
+  int page = 0;
   @override
   void initState() {
     super.initState();
+    pageContactFuture = ContactApiService.searchContacts(
+      title: title,
+      description: description,
+      createdBy: createdBy,
+      page: 0,
+    );
   }
-
-  final newPage = PageObject.fromJson({
-    'content': [
-      Contact(
-        id: "1",
-        title: "니콜라스 형님 강의들도 부탁드립니다.",
-        description: "그짝에도 좋은 강의 많아요!",
-        createdBy: "test1",
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-      ),
-      Contact(
-        id: "2",
-        title: "다른 컨텐츠도 부탁해요",
-        description: "강의 리뷰말고 이것저것 부탁",
-        createdBy: "test2",
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-      ),
-      Contact(
-        id: "1",
-        title: "니콜라스 형님 강의들도 부탁드립니다.",
-        description: "그짝에도 좋은 강의 많아요!",
-        createdBy: "test1",
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-      ),
-      Contact(
-        id: "1",
-        title: "니콜라스 형님 강의들도 부탁드립니다.",
-        description: "그짝에도 좋은 강의 많아요!",
-        createdBy: "test1",
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-      ),
-      Contact(
-        id: "2",
-        title: "다른 컨텐츠도 부탁해요",
-        description: "강의 리뷰말고 이것저것 부탁",
-        createdBy: "test2",
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-      ),
-      Contact(
-        id: "1",
-        title: "니콜라스 형님 강의들도 부탁드립니다.",
-        description: "그짝에도 좋은 강의 많아요!",
-        createdBy: "test1",
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-      ),
-      Contact(
-        id: "2",
-        title: "다른 컨텐츠도 부탁해요",
-        description: "강의 리뷰말고 이것저것 부탁",
-        createdBy: "test2",
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-      ),
-      Contact(
-        id: "1",
-        title: "니콜라스 형님 강의들도 부탁드립니다.",
-        description: "그짝에도 좋은 강의 많아요!",
-        createdBy: "test1",
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-      ),
-      Contact(
-        id: "2",
-        title: "다른 컨텐츠도 부탁해요",
-        description: "강의 리뷰말고 이것저것 부탁",
-        createdBy: "test2",
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-      ),
-      Contact(
-        id: "2",
-        title: "다른 컨텐츠도 부탁해요",
-        description: "강의 리뷰말고 이것저것 부탁",
-        createdBy: "test2",
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-      ),
-    ],
-    'pageable': {
-      'pageNumber': 0,
-      'pageSize': 3,
-    },
-    'first': true,
-    'last': false,
-    'totalPages': 1,
-    'totalElements': 3,
-    'size': 3,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -140,55 +58,71 @@ class _ContactsListState extends State<ContactsList> {
             const SizedBox(
               height: 10,
             ),
-            Flexible(
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Theme.of(context).secondaryHeaderColor,
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(color: Colors.black.withOpacity(0.3))),
-                clipBehavior: Clip.hardEdge,
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ContactItem(contact: newPage.content[index]);
-                  },
-                  separatorBuilder: (c, i) => const Divider(
-                    height: 0,
-                    thickness: 0,
-                  ),
-                  itemCount: newPage.content.length,
-                ),
-              ),
-            ),
+            FutureBuilder(
+                future: pageContactFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).secondaryHeaderColor,
+                                borderRadius: BorderRadius.circular(15),
+                                border: Border.all(
+                                    color: Colors.black.withOpacity(0.3))),
+                            clipBehavior: Clip.hardEdge,
+                            child: ListView.separated(
+                              shrinkWrap: true,
+                              itemBuilder: (BuildContext context, int index) {
+                                return ContactItem(
+                                    contact: snapshot.data!.content[index]);
+                              },
+                              separatorBuilder: (c, i) => const Divider(
+                                height: 0,
+                                thickness: 0,
+                              ),
+                              itemCount: snapshot.data!.content.length,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            for (int i = 1; i <= snapshot.data!.totalPages; i++)
+                              Row(
+                                children: [
+                                  TextButton(
+                                    onPressed: () {},
+                                    child: Text('$i'),
+                                  ),
+                                  const SizedBox(
+                                    width: 3,
+                                  )
+                                ],
+                              ),
+                          ],
+                        ),
+                      ],
+                    );
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                }),
             const SizedBox(
               height: 10,
             ),
             Row(
               children: [
-                for (int i = 1; i <= 3; i++)
-                  Row(
-                    children: [
-                      TextButton(
-                        onPressed: () {},
-                        child: Text('$i'),
-                      ),
-                      const SizedBox(
-                        width: 3,
-                      )
-                    ],
-                  ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                const SizedBox(
+                SizedBox(
                   width: 100,
                   height: 30,
                   child: TextField(
-                    decoration: InputDecoration(
+                    controller: titleController,
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -197,7 +131,13 @@ class _ContactsListState extends State<ContactsList> {
                   width: 5,
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      title = titleController.text;
+                      pageContactFuture =
+                          ContactApiService.searchContacts(title: title);
+                    });
+                  },
                   child: const Text('검색'),
                 )
               ],

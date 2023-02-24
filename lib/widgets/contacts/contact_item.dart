@@ -12,46 +12,44 @@ class ContactItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      onTap: () {
+        navKey.currentState!.pushNamed('$routeContacts/${contact.id}');
+      },
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
-        child: GestureDetector(
-          onTap: () {
-            navKey.currentState!.pushNamed('$routeContacts/${contact.id}');
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(contact.title),
-                    Row(
-                      children: [
-                        Text(
-                          contact.createdBy,
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.black.withOpacity(0.6),
-                          ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(contact.title),
+                  Row(
+                    children: [
+                      Text(
+                        contact.createdBy,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black.withOpacity(0.6),
                         ),
-                        const SizedBox(
-                          width: 5,
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        timeago.format(contact.updatedAt, locale: 'kr'),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black.withOpacity(0.6),
                         ),
-                        Text(
-                          timeago.format(contact.updatedAt, locale: 'kr'),
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.black.withOpacity(0.6),
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
