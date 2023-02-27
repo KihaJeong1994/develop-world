@@ -1,17 +1,14 @@
-# develop_world
+# develop_world_by_develop
 
-A new Flutter project.
+D.W.D stands for Develop World by Develop. This site tries to share useful information about develop, programming, etc.
 
-## Getting Started
+These are the information shared by this site.
+1. Lecture reviews from famous korean online programming lecture websites
+2. Developing...
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+D.W.D 는 Develop World by Develop, '개발로 세상을 발전시키자'의 약자입니다. 이 사이트는 개발에 관련된 모든 유용한 정보를 공유하기 위해 노력하고 있습니다.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# develop-world
+이 사이트가 제공하는 정보는 다음과 같습니다.
+1. 한국 유명 온라인 개발 강의 사이트의 강의들의 리뷰들
+2. 개발중...
