@@ -52,10 +52,10 @@ class _MyAppState extends State<WebglInstancingPerformance> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
-    width = screenSize!.width;
-    height = screenSize!.height;
-    // width = 600;
-    // height = 600;
+    // width = screenSize!.width;
+    // height = screenSize!.height;
+    width = 600;
+    height = 600;
 
     three3dRender = FlutterGlPlugin();
 
