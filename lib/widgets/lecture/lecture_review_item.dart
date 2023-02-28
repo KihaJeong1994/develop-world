@@ -3,6 +3,7 @@ import 'package:develop_world/routes/routes.dart';
 import 'package:develop_world/widgets/common/five_star_rate.dart';
 import 'package:develop_world/widgets/lecture/lecture_review_form.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -104,13 +105,12 @@ class _LectureReviewItemState extends State<LectureReviewItem> {
                                       title: const Text('로그인을 해주세요'),
                                       actions: <Widget>[
                                         TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, 'Cancel'),
+                                          onPressed: () => context.pop(),
                                           child: const Text('Cancel'),
                                         ),
                                         TextButton(
-                                          onPressed: () => navKey.currentState!
-                                              .pushNamed(routeSignIn),
+                                          onPressed: () =>
+                                              context.push(routeSignIn),
                                           child: const Text('OK'),
                                         ),
                                       ],
@@ -169,7 +169,7 @@ class _LectureReviewItemState extends State<LectureReviewItem> {
         title: const Text('삭제하시겠습니까?'),
         actions: <Widget>[
           TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
+            onPressed: () => context.pop(),
             child: const Text('Cancel'),
           ),
           TextButton(
@@ -178,7 +178,7 @@ class _LectureReviewItemState extends State<LectureReviewItem> {
                   lectureId: widget.lectureReview.lectureId!,
                   id: widget.lectureReview.id!,
                   index: widget.index);
-              Navigator.pop(context);
+              context.pop();
             },
             child: const Text('OK'),
           ),

@@ -3,6 +3,7 @@ import 'package:develop_world/routes/routes.dart';
 import 'package:develop_world/widgets/common/five_star_rate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_card/image_card.dart';
 
 const maxRate = 5;
@@ -34,7 +35,7 @@ class _LectureItemState extends State<LectureItem> {
     var lecture = widget.lecture;
     return GestureDetector(
       onTap: () {
-        navKey.currentState!.pushNamed('$routeLectures/${lecture.id}');
+        context.push('$routeLectures/${lecture.id}');
       },
       child: MouseRegion(
         onEnter: (_) {

@@ -4,6 +4,7 @@ import 'package:develop_world/model/auth/sign_in_info.dart';
 import 'package:develop_world/routes/routes.dart';
 import 'package:develop_world/services/auth/auth_api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_talk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,7 +43,7 @@ class _SignInScreenState extends State<SignInScreen> {
       // window.localStorage['id'] = user.kakaoAccount!.email!;
       // window.localStorage['signinPlatform'] = SigninPlatform.kakao.name;
       SingleEventBus.singleEventBus.fire(SignInEvent());
-      navKey.currentState!.pushNamed(routeHome);
+      context.push(routeHome);
     } catch (error) {
       print('카카오톡으로 로그인 실패 $error');
     }
@@ -131,7 +132,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   children: [
                     TextButton(
                       onPressed: () {
-                        navKey.currentState!.pushNamed(routeSignUp);
+                        context.push(routeSignUp);
                       },
                       child: const Text(
                         '회원가입',
@@ -168,7 +169,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         // window.localStorage['id'] = authResponse.userId;
                         // window.localStorage['token'] = authResponse.token;
                         SingleEventBus.singleEventBus.fire(SignInEvent());
-                        navKey.currentState!.pushNamed(routeHome);
+                        context.push(routeHome);
                       }).onError((error, stackTrace) {
                         showDialog<String>(
                           context: context,
@@ -176,7 +177,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             title: const Text('로그인 정보가 틀렸습니다!'),
                             actions: <Widget>[
                               TextButton(
-                                onPressed: () => Navigator.pop(context, 'OK'),
+                                onPressed: () => context.pop(),
                                 child: const Text('OK'),
                               ),
                             ],

@@ -128,7 +128,15 @@ class _MyAppState extends State<WebglInstancingPerformance> {
               ),
             ],
           )
-        : const CircularProgressIndicator();
+        : Column(
+            children: const [
+              CircularProgressIndicator(),
+              SizedBox(
+                width: 600,
+                height: 600,
+              ),
+            ],
+          );
   }
 
   render() {

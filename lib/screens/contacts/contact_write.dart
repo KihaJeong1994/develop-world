@@ -4,6 +4,7 @@ import 'package:develop_world/routes/routes.dart';
 import 'package:develop_world/screens/screen_frame.dart';
 import 'package:develop_world/services/contact/contact_api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ContactWrite extends StatefulWidget {
@@ -36,7 +37,7 @@ class _ContactWriteState extends State<ContactWrite> {
       updatedAt: DateTime.now(),
     );
     ContactApiService.insertContact(contactInstance).then((value) {
-      navKey.currentState!.pushNamed(routeContacts);
+      context.push(routeContacts);
     }).onError((error, stackTrace) {
       SingleEventBus.singleEventBus.fire(SignOutEvent());
       askToLogin();
@@ -50,11 +51,11 @@ class _ContactWriteState extends State<ContactWrite> {
         title: const Text('로그인을 해주세요'),
         actions: <Widget>[
           TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
+            onPressed: () => context.pop(),
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () => navKey.currentState!.pushNamed(routeSignIn),
+            onPressed: () => context.push(routeSignIn),
             child: const Text('OK'),
           ),
         ],
@@ -78,7 +79,7 @@ class _ContactWriteState extends State<ContactWrite> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               IconButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(),
                 icon: const Icon(Icons.arrow_back),
               ),
             ],

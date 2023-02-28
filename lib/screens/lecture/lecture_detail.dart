@@ -9,6 +9,7 @@ import 'package:develop_world/widgets/lecture/lecture_picture.dart';
 import 'package:develop_world/widgets/lecture/lecture_review_form.dart';
 import 'package:develop_world/widgets/lecture/lecture_review_list.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -41,7 +42,7 @@ class _LectureDetailState extends State<LectureDetail> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               IconButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(),
                 icon: const Icon(Icons.arrow_back),
               ),
             ],
@@ -152,7 +153,7 @@ class _LectureReviewPartState extends State<LectureReviewPart> {
       setState(() {
         isWritingReview = false;
       });
-      Navigator.pop(context);
+      context.pop();
     }).onError((error, stackTrace) {
       SingleEventBus.singleEventBus.fire(SignOutEvent());
       askToLogin();
@@ -173,7 +174,7 @@ class _LectureReviewPartState extends State<LectureReviewPart> {
       setState(() {
         isWritingReview = false;
       });
-      Navigator.pop(context);
+      context.pop();
     }).onError((error, stackTrace) {
       SingleEventBus.singleEventBus.fire(SignOutEvent());
       askToLogin();
@@ -204,11 +205,11 @@ class _LectureReviewPartState extends State<LectureReviewPart> {
         title: const Text('로그인을 해주세요'),
         actions: <Widget>[
           TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
+            onPressed: () => context.pop(),
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () => navKey.currentState!.pushNamed(routeSignIn),
+            onPressed: () => context.push(routeSignIn),
             child: const Text('OK'),
           ),
         ],
@@ -249,12 +250,11 @@ class _LectureReviewPartState extends State<LectureReviewPart> {
                         title: const Text('로그인을 해주세요'),
                         actions: <Widget>[
                           TextButton(
-                            onPressed: () => Navigator.pop(context, 'Cancel'),
+                            onPressed: () => context.pop(),
                             child: const Text('Cancel'),
                           ),
                           TextButton(
-                            onPressed: () =>
-                                navKey.currentState!.pushNamed(routeSignIn),
+                            onPressed: () => context.push(routeSignIn),
                             child: const Text('OK'),
                           ),
                         ],

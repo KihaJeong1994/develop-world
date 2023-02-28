@@ -1,6 +1,7 @@
 import 'package:develop_world/model/contacts/contact.dart';
 import 'package:develop_world/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ContactItem extends StatelessWidget {
@@ -14,7 +15,7 @@ class ContactItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        navKey.currentState!.pushNamed('$routeContacts/${contact.id}');
+        context.push('$routeContacts/${contact.id}');
       },
       child: MouseRegion(
         cursor: SystemMouseCursors.click,

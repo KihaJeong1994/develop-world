@@ -3,6 +3,7 @@ import 'package:develop_world/routes/routes.dart';
 import 'package:develop_world/services/contact/contact_api_service.dart';
 import 'package:develop_world/widgets/contacts/contact_item.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ContactsList extends StatefulWidget {
   const ContactsList({super.key});
@@ -49,7 +50,7 @@ class _ContactsListState extends State<ContactsList> {
                 ),
                 ElevatedButton(
                   onPressed: (() {
-                    navKey.currentState!.pushNamed(routeWriteContact);
+                    context.push(routeWriteContact);
                   }),
                   child: const Text('쓰기'),
                 )

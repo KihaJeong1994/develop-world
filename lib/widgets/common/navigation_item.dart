@@ -1,5 +1,5 @@
-import 'package:develop_world/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class NavigationItem extends StatelessWidget {
   final String title, routeName;
@@ -14,9 +14,9 @@ class NavigationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (() {
-        navKey.currentState!.pushNamed(routeName);
-      }),
+      onTap: () {
+        context.push(routeName);
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: MouseRegion(

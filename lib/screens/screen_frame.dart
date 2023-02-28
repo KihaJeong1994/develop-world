@@ -3,6 +3,7 @@ import 'package:develop_world/routes/routes.dart';
 import 'package:develop_world/screens/account/sign_in_screen.dart';
 import 'package:develop_world/widgets/common/navigation_bar_web.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -83,7 +84,7 @@ class _ScreenFrameState extends State<ScreenFrame> {
           // leading: IconButton(
           //   icon: const Icon(Icons.accessibility_new_rounded),
           //   onPressed: () {
-          //     navKey.currentState!.pushNamed(routeHome);
+          //     context.push(routeHome);
           //   },
           // ),
           actions: <Widget>[
@@ -100,7 +101,7 @@ class _ScreenFrameState extends State<ScreenFrame> {
                 if (isSignIn) {
                   logOut();
                 }
-                navKey.currentState!.pushNamed(routeSignIn);
+                context.push(routeSignIn);
               },
               style: TextButton.styleFrom(foregroundColor: Colors.black),
               icon: const Icon(Icons.login),
@@ -109,7 +110,7 @@ class _ScreenFrameState extends State<ScreenFrame> {
           ],
           title: TextButton(
             onPressed: () {
-              navKey.currentState!.pushNamed(routeHome);
+              context.push(routeHome);
             },
             child: const Text(
               'D.W.D',

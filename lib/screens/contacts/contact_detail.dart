@@ -1,6 +1,7 @@
 import 'package:develop_world/model/contacts/contact.dart';
 import 'package:develop_world/services/contact/contact_api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ContactDetail extends StatefulWidget {
@@ -33,7 +34,7 @@ class _ContactDetailState extends State<ContactDetail> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               IconButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(),
                 icon: const Icon(Icons.arrow_back),
               ),
             ],

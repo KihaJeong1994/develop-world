@@ -2,6 +2,7 @@ import 'package:develop_world/model/user.dart';
 import 'package:develop_world/routes/routes.dart';
 import 'package:develop_world/services/auth/auth_api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
@@ -125,14 +126,14 @@ class SignUpScreen extends StatelessWidget {
                                     title: const Text('회원가입에 성공하였습니다!'),
                                     actions: <Widget>[
                                       TextButton(
-                                        onPressed: () => navKey.currentState!
-                                            .pushNamed(routeHome),
+                                        onPressed: () =>
+                                            context.push(routeHome),
                                         child: const Text('OK'),
                                       ),
                                     ],
                                   ),
                                 );
-                                navKey.currentState!.pushNamed(routeHome);
+                                context.push(routeHome);
                               }).onError((error, stackTrace) {
                                 showDialog<String>(
                                   context: context,
@@ -141,8 +142,7 @@ class SignUpScreen extends StatelessWidget {
                                     title: const Text('정보를 정확히 입력해주세요!'),
                                     actions: <Widget>[
                                       TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, 'OK'),
+                                        onPressed: () => context.pop(),
                                         child: const Text('OK'),
                                       ),
                                     ],
