@@ -4,6 +4,7 @@ import 'package:develop_world/services/contact/contact_api_service.dart';
 import 'package:develop_world/widgets/contacts/contact_item.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ContactsList extends StatefulWidget {
   const ContactsList({super.key});
@@ -19,6 +20,12 @@ class _ContactsListState extends State<ContactsList> {
   String? description;
   String? createdBy;
   int page = 0;
+  late SharedPreferences prefs;
+
+  Future initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -28,6 +35,7 @@ class _ContactsListState extends State<ContactsList> {
       createdBy: createdBy,
       page: 0,
     );
+    initPrefs();
   }
 
   @override
@@ -49,9 +57,28 @@ class _ContactsListState extends State<ContactsList> {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: (() {
+                  onPressed: () {
+                    if (prefs.getString('token') == null) {
+                      showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text('로그인을 해주세요'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => context.pop(),
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () => context.push(routeSignIn),
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
+                      return;
+                    }
                     context.push(routeWriteContact);
-                  }),
+                  },
                   child: const Text('쓰기'),
                 )
               ],
