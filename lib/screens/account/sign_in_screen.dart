@@ -6,6 +6,7 @@ import 'package:develop_world/services/auth/auth_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_talk.dart';
+import 'package:seo/seo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -92,8 +93,12 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
                 const Text('\n'),
-                const Text(
-                    'D.W.D는 개발자의 역량 발전과 미래를 위한 모든 정보를 취합하고 공유하려는 취지로 만든 사이트입니다. 여러분의 많은 참여를 부탁드립니다.'),
+                Seo.text(
+                  text:
+                      'D.W.D는 개발자의 역량 발전과 미래를 위한 모든 정보를 취합하고 공유하려는 취지로 만든 사이트입니다. 여러분의 많은 참여를 부탁드립니다.',
+                  child: const Text(
+                      'D.W.D는 개발자의 역량 발전과 미래를 위한 모든 정보를 취합하고 공유하려는 취지로 만든 사이트입니다. 여러분의 많은 참여를 부탁드립니다.'),
+                ),
                 const SizedBox(
                   height: 50,
                 ),
