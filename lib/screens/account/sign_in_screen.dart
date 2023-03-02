@@ -88,6 +88,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                       TextSpan(
                         text: '에 오신 걸 환영합니다!',
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
                       ),
                     ],
                   ),
@@ -160,7 +163,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   height: 50,
                   width: 250,
                   decoration: BoxDecoration(
-                    color: Colors.blue,
+                    // color: Colors.blue,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: ElevatedButton(
@@ -190,7 +193,9 @@ class _SignInScreenState extends State<SignInScreen> {
                         );
                       });
                     },
-                    style: TextButton.styleFrom(backgroundColor: Colors.blue),
+                    style: TextButton.styleFrom(
+                        // backgroundColor: Colors.blue,
+                        ),
                     child: const Text(
                       'Login',
                       style: TextStyle(color: Colors.white, fontSize: 25),

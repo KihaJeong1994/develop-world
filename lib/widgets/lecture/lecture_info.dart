@@ -1,6 +1,7 @@
 import 'package:develop_world/model/lecture/lecture.dart';
 import 'package:develop_world/widgets/common/five_star_rate.dart';
 import 'package:flutter/material.dart';
+import 'package:seo/seo.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LectureInfo extends StatelessWidget {
@@ -24,15 +25,18 @@ class LectureInfo extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            lecture.title,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
+          Seo.text(
+            text: lecture.title,
+            child: Text(
+              lecture.title,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
           TextButton(
-            onPressed: _launchUrl,
+            onPressed: () {},
             child: Text(lecture.site.name),
           ),
           Row(
@@ -46,8 +50,11 @@ class LectureInfo extends StatelessWidget {
               )
             ],
           ),
-          Text(
-            lecture.description,
+          Seo.text(
+            text: lecture.description,
+            child: Text(
+              lecture.description,
+            ),
           ),
         ],
       ),

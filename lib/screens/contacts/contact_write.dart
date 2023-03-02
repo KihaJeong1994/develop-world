@@ -145,8 +145,9 @@ class _ContactWriteState extends State<ContactWrite> {
                       ),
                       child: ElevatedButton(
                         onPressed: onSubmitPressed,
-                        style:
-                            TextButton.styleFrom(backgroundColor: Colors.blue),
+                        style: TextButton.styleFrom(
+                            // backgroundColor: Colors.blue,
+                            ),
                         child: const Text(
                           '작성',
                           style: TextStyle(color: Colors.white, fontSize: 15),

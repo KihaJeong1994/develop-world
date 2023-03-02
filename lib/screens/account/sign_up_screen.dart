@@ -152,7 +152,8 @@ class SignUpScreen extends StatelessWidget {
                             }
                           },
                           style: TextButton.styleFrom(
-                              backgroundColor: Colors.blue),
+                              // backgroundColor: Colors.blue,
+                              ),
                           child: const Text(
                             '회원가입',
                             style: TextStyle(color: Colors.white, fontSize: 15),
